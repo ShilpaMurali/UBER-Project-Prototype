@@ -6,7 +6,7 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
-  , signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
+ // , signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
   , http = require('http')
   , path = require('path');
 
@@ -33,12 +33,12 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 /* Front, Signup,Signin pages*/
-app.get('/signIn', signUpIn.signIn);
-app.get('/signUp', signUpIn.signUp);
-app.get('/customerSignIn', signUpIn.customerSignIn);
-app.get('/driverSignIn', signUpIn.driverSignIn);
-app.get('/customerSignUp', signUpIn.customerSignUp);
-app.get('/driverSignUp', signUpIn.driverSignUp);
+//app.get('/signIn', signUpIn.signIn);
+//app.get('/signUp', signUpIn.signUp);
+//app.get('/customerSignIn', signUpIn.customerSignIn);
+//app.get('/driverSignIn', signUpIn.driverSignIn);
+//app.get('/customerSignUp', signUpIn.customerSignUp);
+//app.get('/driverSignUp', signUpIn.driverSignUp);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
