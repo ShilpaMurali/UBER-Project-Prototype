@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   //, signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
+  , driver = require('./routes/driver')
   , http = require('http')
   , path = require('path');
 
@@ -38,7 +39,13 @@ app.get('/users', user.list);
 /*app.get('/customerSignIn', signUpIn.customerSignIn);
 app.get('/driverSignIn', signUpIn.driverSignIn);
 app.get('/customerSignUp', signUpIn.customerSignUp);
-app.get('/driverSignUp', signUpIn.driverSignUp);*/
+*/
+
+//Driver Signup page
+app.get('/signup/driver', driver.driverSignUp);
+
+//Driver Signup form
+app.get('/signup/driver/submit', driver.driverSignUpForm);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

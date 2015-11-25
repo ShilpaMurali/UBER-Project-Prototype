@@ -4,27 +4,15 @@
     <meta charset="UTF-8">
     <title>Sign Up to Drive With UBER</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    
-    
+    <link rel='stylesheet' href='/stylesheets/styleDriverSignup.css' />
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
     <link rel='stylesheet prefetch' href='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.css'>
-<link rel='stylesheet prefetch' href='http://localhost:8080/docs.css'>
+
 
        <style>
        
-      
-       
-       .inputdemoBasicUsage {
-    background-color: #f1f1f1;
-    box-shadow: 0 2px 5px rgba(0,0,0,.15);
-    border: 1px solid rgba(200,200,200,.4);
-    box-sizing: border-box;
-    padding: 36px;
-    width: 362px;
-}
-       
-      
  
-       
        </style>
    
     
@@ -45,12 +33,6 @@
  <table class="headerTable" height="40">
 		<tbody><tr>
 			<td width="60%" align="right"><img src="/resources/signup/headerButton.PNG" height="55"></td>
-			
-			
-			
-			
-			
-			
 			
 			<td width="100%" align="right"><button class="btn btn-default" style="font-size: medium;"><a href="/logout">Logout</a></button></td>
 			<td></td><td></td><td></td>
@@ -90,11 +72,11 @@
   <div layout="" layout-sm="column">
          
         <md-input-container>
-          <input ng-model="driver.D_Firstname" placeholder="First Name" ng-required="true">
+          <input ng-model="driver.firstname" placeholder="First Name" ng-required="true">
         </md-input-container>
         
         <md-input-container >
-          <input ng-model="driver.D_Lastname" placeholder="Last Name" ng-required="true">
+          <input ng-model="driver.lastname" placeholder="Last Name" ng-required="true">
         </md-input-container>
         
   </div>
@@ -102,27 +84,27 @@
 
   <div layout="column" layout-lg="column">
      <md-input-container class="md-block">
-     <input ng-model="driver.D_Email" type="email" placeholder="Email" ng-required="true">
+     <input ng-model="driver.email" type="email" placeholder="Email" ng-required="true">
     </md-input-container> 
   </div>
      
      <div layout="column" layout-lg="column">
      <md-input-container class="md-block">
-     <input ng-model="driver.D_Phone" type="tel" placeholder="Phone" ng-required="true">
+     <input ng-model="driver.phone" type="tel" placeholder="Phone" ng-required="true">
     </md-input-container> 
   </div>
      
      
      <div layout="column" layout-lg="column">
       <md-input-container class="md-block">
-     <input ng-model="driver.D_Password" type="password" placeholder="Password (At least 5 character)" ng-required="true">
+     <input ng-model="driver.password" type="password" placeholder="Password (At least 5 character)" ng-required="true">
      </md-input-container>
 	</div>
 	
 	<div layout="column" layout-lg="column">
 	      <md-input-container class="md-block">
         <label>Address</label>
-        <input ng-model="driver.D_Address">
+        <input ng-model="driver.address">
       </md-input-container>
      </div>
       
@@ -130,14 +112,14 @@
       <div layout="column" layout-lg="column">
         <md-input-container>
           <label>City</label>
-          <input ng-model="driver.D_City" ng-required="true">
+          <input ng-model="driver.city" ng-required="true">
         </md-input-container>
         </div>
         
         <div layout="column" layout-lg="column" >
         <md-input-container>
           <label>State</label>
-          <md-select ng-model="driver.D_State">
+          <md-select ng-model="driver.state">
             <md-option ng-repeat="state in states" value="{{state.abbrev}}">
               {{state.abbrev}}
             </md-option>
@@ -148,7 +130,7 @@
         <div layout="column" layout-lg="column">
         <md-input-container>
           <label>Zip Code</label>
-          <input name="postalCode" ng-model="driver.D_ZipCode" placeholder="12345"
+          <input name="postalCode" ng-model="driver.postalCode" placeholder="12345"
                  required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
           <div ng-messages="driverForm.postalCode.$error" role="alert" multiple>
             <div ng-message="required" class="my-message">You must supply a postal code.</div>
@@ -163,7 +145,7 @@
         </div>
 
 <div layout="column" layout-lg="column">
-    <md-button type="submit" class="md-raised md-primary" ng-click="D_Signup">Sign Up</md-button>  
+    <md-button type="submit" class="md-raised md-primary">Sign Up</md-button>  
 </div>
 
   </form>
@@ -194,7 +176,7 @@
      
     };
 
-    $scope.D_State = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+    $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
     'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
     'WY').split(' ').map(function(state) {
         return {abbrev: state};
