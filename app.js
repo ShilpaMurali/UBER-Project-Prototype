@@ -45,7 +45,7 @@ app.get('/customerSignUp', signUpIn.customerSignUp);
 app.get('/signup/driver', driver.driverSignUp);
 
 //Driver Signup form
-app.get('/signup/driver/submit', driver.driverSignUpForm);
+app.post('/signup/driver/submit', driver.driverSignUpForm);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
