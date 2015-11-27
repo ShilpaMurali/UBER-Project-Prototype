@@ -69,6 +69,23 @@ exports.driverSignIn=function(req, res) {
 	});
 };
 /**
+ * Opening admin Login page
+ */
+exports.adminSignIn=function(req, res) {
+
+	ejs.renderFile('./views/adminSignin.ejs', function(err, result) {
+
+		if (!err) {
+			res.end(result);
+		}
+
+		else {
+			res.end('An error occurred');
+			console.log(err);
+		}
+	});
+};
+/**
  * Opening Customer Signup page
  */
 exports.customerSignUp=function(req, res) {
@@ -88,7 +105,7 @@ exports.customerSignUp=function(req, res) {
 /**
  * Opening Driver Signup page
  */
-exports.driverSignUp=function(req, res) {
+/*exports.driverSignUp=function(req, res) {
 
 	ejs.renderFile('./views/driverSignup.ejs', function(err, result) {
 
@@ -101,4 +118,4 @@ exports.driverSignUp=function(req, res) {
 			console.log(err);
 		}
 	});
-};
+};*/

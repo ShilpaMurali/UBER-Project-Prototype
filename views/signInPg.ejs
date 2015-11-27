@@ -15,6 +15,7 @@
 <div class="signInbottom" ng-controller="signInPgcontroller">
 <button type="submit" id="customerSignInBtn" class="customerSignInBtn" value="LOG IN AS A RIDER" ng-click="customerSignIn()">LOG IN AS A RIDER</button>
 <button type="submit" id="driverSignInBtn" class="customerSignInBtn driverSignInBtn" value="LOG IN AS A DRIVER" ng-click="driverSignIn()">LOG IN AS A DRIVER</button>
+<button type="submit" id="adminSignInBtn" class="customerSignInBtn adminSignInBtn" value="LOG IN AS A ADMIN" ng-click="adminSignIn()">LOG IN AS A ADMIN</button>
 </div>
     </div>
 
@@ -24,10 +25,13 @@
 		app.controller('signInPgcontroller', function($scope) {
 			
 			$scope.customerSignIn = function() {
-							window.location = "/customerSignIn";
+							window.location = "/homepage/signin/customer";
 			}
 			$scope.driverSignIn = function() {
-				window.location = "/driverSignIn";
+				window.location = "/homepage/signin/driver";
+}
+			$scope.adminSignIn = function() {
+				window.location = "/homepage/signin/admin";
 }
 		});
 	</script>
