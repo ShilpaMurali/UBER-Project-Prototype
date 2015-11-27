@@ -1,69 +1,37 @@
 <!DOCTYPE html>
-<html >
-  <head>
-    <meta charset="UTF-8">
-    <title>Sign Up to Drive With UBER</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-    <link rel='stylesheet' href='/stylesheets/styleDriverSignup.css' />
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel='stylesheet prefetch' href='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.css'>
+<html class="mainpage">
+<head>
+<title>Uber</title>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
+</head>
+<body class="mainpagebody" ng-app="myApp">
+	<div class="mainheader"></div>
+	<div class="headerUber mainheaderUber" id="headerUber">
+		<img src="images/logo-web-light@1x.png" alt="" width="170">
+	</div>
 
+	<div class="headerRight" ng-controller="mainPgcontroller">
+		<form name="myForm" novalidate>
+			<button class="homeLoginBtn" type="submit" ng-click="homelogin()">Log
+				in</button>
+			<button class="homeSignupBtn" type="submit" ng-click="homesignup()">Sign
+				up</button>
+		</form>
+	</div>
+	<div class="backimg"></div>
 
-       <style>
-       
- 
-       </style>
-   
-    
-    
-  </head>
-
-  <body>
- 
-
-
-
- <nav class="navbar navbar-default" style="box-shadow: 3px 3px 5px #000000; background-color: #padding-bottom: 10px;box-shadow: 3px 3px 5px #000000; background-color: #000000;">
-
-
-
-	
-
- <table class="headerTable" height="40">
-		<tbody><tr>
-			<td width="60%" align="right"><img src="/resources/signup/headerButton.PNG" height="55"></td>
-			<td width="100%" align="right"><button class="btn btn-link" style="font-size: medium;"><a href="/signin">SIGN IN</a></button></td>
-			<td width="100%" align="right"><button class="btn btn-link" style="font-size: medium;"><a href="/signup">SIGN UP</a></button></td>
-			<td></td><td></td><td></td>
-		</tr>
-		
-		
-		
-		
-	</tbody></table>
-	
-	
-
- </nav>	
- 
- 
- 
- 
- 
- 
-
-
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-aria.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-messages.min.js'></script>
-<script src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
-
-
-    
-    
-    
-  </body>
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('mainPgcontroller', function($scope) {
+			
+			$scope.homelogin = function() {
+							window.location = "/signIn";
+			}
+			$scope.homesignup = function() {
+				window.location = "/signUp";
+}
+		});
+	</script>
+</body>
 </html>
