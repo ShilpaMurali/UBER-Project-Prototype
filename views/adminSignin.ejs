@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Uber</title>
+	<link rel='stylesheet' href='/stylesheets/styleDriverSignin.css' />
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
+</head>
+<body ng-app="myApp">
+	<div class="headerUber" id="headerUber">U B E R</div>  
+	<div id="img1"><img src="signinDriver.PNG"></div> 
+	<form  ng-app="myApp"
+			name="myForm" action="adminSignIn" method="POST" novalidate> 
+			<center><div id="textField" class="header">EMAIL</center>
+			<center><input id="field" placeholder="Email" type="mail" name="email" ng-model="email" required><br>
+				<span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+					<span ng-show="myForm.email.$error.required">Email is required.</span>
+				</span></center>
+			</div> 
+			<center><div id="textFieldPwd" class="header">PASSWORD</center>
+				<center><input id="field" placeholder="Password" type="password" name="password" ng-model="password" required><br>
+				<span style="color:red" ng-show="myForm.password.$dirty && myForm.password.$invalid">
+					<span ng-show="myForm.password.$error.required">Password is required.</span>
+				</span></center>
+			</div>
+			<center><button type="submit" id="fsSubmitButton" class="fsSubmitButton" value="SIGN IN" ng-click="signIn()"  ng-disabled="myForm.email.$dirty && myForm.email.$invalid ||  
+			myForm.password.$dirty && myForm.password.$invalid">SIGN IN</button></center>
+		</form>
+		<script>
+			var app = angular.module('myApp', []);
+			app.controller('LoginController', function($scope) {
+			    $scope.user = 'admin';
+			    $scope.email = 'admin@gmail.com';
+			});
+		</script>
+</body>                          
+</html>     
