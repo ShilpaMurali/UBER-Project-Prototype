@@ -425,7 +425,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 	  $routeProvider
 	    .when('/',{
 	  	   
-	      templateUrl: 'partials/map_1.ejs',
+	      templateUrl: '/partials/map_1.ejs',
 	      controller: 'mapsController'
 	    })
 	    .when('/driverProfile/:drivername',{
