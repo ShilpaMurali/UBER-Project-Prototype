@@ -1,9 +1,11 @@
 var mysql = require('mysql');
 var pool=require('./mysqlpool');
 var connection=pool.getConnection(function(err,connection){});
+var Driver_Id;
 exports.login=function(req,res)
 {	console.log("Inside Login");
 	var email, password;
+	
 	email=req.param("email");
 	password=req.param("password");
 	console.log(email+" "+password);
@@ -21,9 +23,17 @@ exports.login=function(req,res)
 		else{
 			//req.session.username=rows[0].D_Firstname;
 			res.render('maps');	
+			
+			Driver_Id = rows[0].Driver_ID ;
+			req.session.Driver_Id = Driver_Id;
+			console.log( "Driver Session " + req.session.Driver_Id);
 		}
 	});
 };
+
+
+
+
 
 exports.logout = function(req,res)
 {

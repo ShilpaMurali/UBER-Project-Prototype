@@ -27,7 +27,7 @@ exports.driverSignUpForm = function(req, res){
 	var newDriver= " INSERT INTO uber.Driver (`D_Firstname`, `D_Lastname`, `D_Address`, `D_City`, `D_State`, `D_ZipCode`, `D_Phone`, `D_Email`, `D_Password`) VALUES ('"+req.param("D_Firstname")+"', '" + req.param("D_Lastname") +"' , '" + req.param("D_Address") +"' , '" + req.param("D_City") +"', '" + req.param("D_State") +"' , '" + req.param("D_ZipCode") +"'  , '" + req.param("D_Phone") +"' , '" + req.param("D_Email") +"' , '" + req.param("D_Password") +"');";
 		
 	
-	//	"INSERT INTO test.users (`emailid`, `password`, `firstname`, `lastname`, `dob`, `gender`) VALUES ('"+req.param("emailid")+"', '" + req.param("password") +"' , '" + req.param("firstname") +"' , '" + req.param("lastname") +"' , '" + req.param("dob") +"' , '" + req.param("gender") +"');";
+	
 	console.log("Query is:"+newDriver);
 
 	
@@ -44,9 +44,37 @@ exports.driverSignUpForm = function(req, res){
 
 	};
 
+//Driver Billing and Ride History
+	
+	//var Driver_Id = req.session.Driver_Id;
+	
+	exports.driverRideHistory = function(req, res){
+		
+		
+		var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '15'; ";
+			
+		
+		console.log("Query is:"+driverBillHistory);
 
+		
+		mysql.fetchData(function(err,results){
+			if(err){
+				throw err;
+			} else {
+			
+				
+				res.render('driverRidesHistory');	
+				//res.redirect('/driver/RidesHistory');
+				res.send(results);
+			}
 
-/*
+		},driverBillHistory);
+
+		};
+
+	
+	
+	/*
 
 //Successful Signup Form Submission 
 exports.signup = function(req, res){
