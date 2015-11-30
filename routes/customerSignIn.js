@@ -1,7 +1,6 @@
 var mysql = require('mysql');
 var pool=require('./mysqlpool');
 var connection=pool.getConnection(function(err,connection){});
-var Driver_Id;
 
 exports.login=function(req,res)
 {	console.log("Inside Customer Login");
@@ -9,7 +8,7 @@ exports.login=function(req,res)
 	email=req.param("email");
 	password=req.param("password");
 	console.log(email+" "+password);
-	var sql_query="SELECT D_Password FROM driver WHERE D_Email=" + connection.escape(email);
+	var sql_query="SELECT C_Password FROM customer WHERE C_Email=" + connection.escape(email);
 	//console.log(sql_query);
 	connection.query(sql_query,function(err,rows)
 	{
@@ -21,7 +20,7 @@ exports.login=function(req,res)
     			res.send(json_responses);
         		//console.log ("invalid email id");
 		}
-		else if(password === rows[0].D_Password) {
+		else if(password === rows[0].C_Password) {
     			req.session = email;
     			json_responses = {"statusCode" : 200};
     			res.send(json_responses);
@@ -44,4 +43,10 @@ exports.logout = function(req,res)
 {
 		req.session.destroy();
 		res.redirect('/');
+};
+
+exports.rendermaps = function(req,res)
+{
+		
+		res.render('maps');
 };

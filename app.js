@@ -8,10 +8,12 @@ var express = require('express')
   , user = require('./routes/user')
   , signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
   , driver = require('./routes/driver')
+  , customer = require('./routes/customer')
   , http = require('http')
   , path = require('path')
   , selectDriver = require('./routes/selectDriver')
   , adminSignIn = require('./routes/adminSignIn')
+  , customerSignIn = require('./routes/customerSignIn')
   , driverSignIn = require('./routes/driverSignIn');
 
 var app = express();
@@ -71,8 +73,23 @@ app.post('/adminSignIn', adminSignIn.adminSignIn);
 
 // Driver SignIn
 app.post('/homepage/signin/driver/login/',driverSignIn.login);
+// Customer SignIn
+app.post('/homepage/signin/customer/login/',customerSignIn.login);
+
+
 app.get('/driver/RidesHistory',driver.driverRideHistory);
 app.get('/driver/RidesHistoryLoad',driver.driverHistory);
+
+//Maps
+app.get('/homepage/signin/customer/maps',customerSignIn.rendermaps);
+
+//ViewCustomerProfile
+app.get('/customer/viewProfile',customer.renderCustomerProfilePage);
+app.get('/customer/getProfilePageDetails',customer.getProfileDetails);
+
+//EditCustomerProfile
+app.get('/customer/editProfile',customer.renderEditProfilePage);
+app.post('/customer/updateProfile',customer.updateCustomerProfile);
 
 
 //Opening individual Rides
