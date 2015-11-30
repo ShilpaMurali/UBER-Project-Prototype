@@ -56,14 +56,10 @@ exports.driverSignUpForm = function(req, res){
 	//Driver Billing and Ride History
 	
 	exports.driverRideHistory = function(req, res){
-		
-		
-		var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '15'; ";
-			
+	var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '15'; ";
 		
 		console.log("Query is:"+driverBillHistory);
 
-		
 		mysql.fetchData(function(err,results){
 			if(err){
 				throw err;
@@ -82,6 +78,70 @@ exports.driverSignUpForm = function(req, res){
 		};
 
 	
+		//Opening individual Ride Details
+
+		exports.rideDetailsLoad = function(req,res){
+		
+			var Ride_ID = req.body.Ride_ID;
+			
+			console.log("and the Ride id is: "+Ride_ID);
+			
+			console.log("Loading Ride Details page");
+			
+		
+		}	
+		
+		
+		
+		
+		// Load Ride Details
+		exports.rideDetails = function(req, res){
+			
+			var Ride_ID = req.body.Ride_ID;
+			console.log( "and the Ride id is: "+Ride_ID);       
+			
+			var existingRideDetails = " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Ride_ID = '"+Ride_ID+"'; ";
+			
+			mysql.fetchData(function(err,result){
+				if(err){
+					console.log("error occured");
+				}
+				else{
+					console.log("sending result back to ride controller");
+					console.log(result);
+					
+					res.send(result);
+				}
+			},existingRideDetails);
+		}			
+		
+		// Delete Ride Details
+		exports.rideDelete = function(req, res){
+			
+			var Ride_ID = req.body.Ride_ID;
+			console.log( "and the Ride id is: "+Ride_ID);       
+			
+			var existingRideDelete = " DELETE FROM `UBER`.`Ride_History` WHERE `Ride_ID`='"+Ride_ID+"'; ";
+				
+			//	" select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Ride_ID = '"+Ride_ID+"'; ";
+			
+			mysql.fetchData(function(err,result){
+				if(err){
+					console.log("error occured");
+				}
+				else{
+					console.log("sending result back to ride controller");
+					console.log(result);
+					
+					
+				}
+			},existingRideDelete);
+		}			
+				
+		
+		
+		
+		
 	
 	/*
 

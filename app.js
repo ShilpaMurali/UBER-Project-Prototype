@@ -75,6 +75,13 @@ app.get('/driver/RidesHistory',driver.driverRideHistory);
 app.get('/driver/RidesHistoryLoad',driver.driverHistory);
 
 
+//Opening individual Rides
+app.post('/rideDetails', driver.rideDetails);
+
+//Opening individual Polls
+app.post('/rideDelete', driver.rideDelete);
+
+
 //partials
 app.get('/partials/:filename',routes.partials);
 app.get('/partials/driverProfile/:drivername',routes.partials);

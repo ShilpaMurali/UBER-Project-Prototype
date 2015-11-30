@@ -42,10 +42,9 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Pickup</th>
-        <th>Driver</th>
+        <th>Pickup Time</th>
+        <th>Customer</th>
         <th>Fare</th>
-        <th>Car</th>
         <th>City</th>
         <th>Payment</th>
       </tr>
@@ -56,18 +55,17 @@
         <tr ng-repeat="ride in rides">
         
       	<td>{{ride.R_Pickup}}</td>
-      	<td>{{ride.D_Firstname}}</td>
+      	<td>{{ride.C_Firstname}}</td>
       	<td>{{ride.R_Amount}}</td>
-      	<td>{{ride.D_CarDetails}}</td>
-      	<td>{{ride.D_City}}</td>
+        <td>{{ride.D_City}}</td>
       	<td>{{ride.C_Credit_Card_No}}</td>
-     	<td><md-button class="md-raised"><a href="" ng-click="polldetail(que.poll_Id)">View</a></md-button></td>
-		<td><md-button class="md-raised"><a href="" ng-click="pollChoice(que.poll_Id)">Respond</a></md-button></td>
+     	<td><md-button class="md-raised"><a href="" ng-click="ridedetail(ride.Ride_ID)">View Detail</a></md-button></td>
+		<td><md-button class="md-raised" ng-show="{{ride.R_Status}} = 0"><a href="" ng-click="ridedelete(ride.Ride_ID)">Delete</a></md-button></td>
      </tbody>	
       </table>
-    </div>
-    
-  <div class="table-responsive"  ng-show=" pollResponses.length > 0" >          
+    	
+    	
+    	<div class="table-responsive"  ng-show=" rideDetails.length > 0" >          
   <table class="table">
     
     <thead>
@@ -81,16 +79,17 @@
     
     <tbody>
       
-        <tr ng-repeat="resp in pollResponses">
-      	<td>{{resp.firstName}} {{resp.lastName}}</td>
+        <tr ng-repeat="details in rideDetails">
+      	<td>{{details.C_Firstname}} </td>
+      	<td>{{details.D_Firstname}} </td>
     <!--<td>{{resp.responseChoice}}</td>-->
-      	<td>{{resp.response}}</td>
+      	
     
     </tbody>
     </table>
      	
     </div>
-				
+    	
 				
 				
 				

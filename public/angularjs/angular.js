@@ -448,6 +448,29 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
     		console.log(response);
     	});
 	
+		
+		//This function will fetch ride details
+    	$scope.ridedetail = function(Ride_ID){
+    		console.log("in controller " + Ride_ID);
+    		$http.post('/rideDetails',{Ride_ID:Ride_ID}).success(function(response){
+    			console.log(response);
+    			$scope.rideDetails = response;
+    		});
+    	}
+    	
+    	//This function will delete ride details
+    	$scope.ridedelete = function(Ride_ID){
+    		console.log("in controller " + Ride_ID);
+    		$http.post('/rideDelete',{Ride_ID:Ride_ID}).success(function(response){
+    			console.log(response);
+    			window.location = '/driver/RidesHistoryLoad';
+    			$scope.rideDelete = response;
+    			
+    		});
+    	}
+    	
+    	
+    	
 	})
 	
 	
