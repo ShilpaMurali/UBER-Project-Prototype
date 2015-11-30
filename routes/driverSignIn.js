@@ -25,8 +25,8 @@ exports.login=function(req,res)
 			res.render('maps');	
 			
 			Driver_Id = rows[0].Driver_ID ;
-			req.session.Driver_Id = Driver_Id;
-			console.log( "Driver Session " + req.session.Driver_Id);
+			//req.session.Driver_Id = Driver_Id;
+			//console.log( "Driver Session " + req.session.Driver_Id);
 		}
 	});
 };

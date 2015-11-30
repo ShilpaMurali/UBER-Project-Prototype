@@ -68,7 +68,12 @@ app.post('/homepage/signup/driver/submit', driver.driverSignUpForm);
 
 // Admin
 app.post('/adminSignIn', adminSignIn.adminSignIn);
+
+// Driver SignIn
 app.post('/homepage/signin/driver/login/',driverSignIn.login);
+app.get('/driver/RidesHistory',driver.driverRideHistory);
+app.get('/driver/RidesHistoryLoad',driver.driverHistory);
+
 
 //partials
 app.get('/partials/:filename',routes.partials);

@@ -44,9 +44,16 @@ exports.driverSignUpForm = function(req, res){
 
 	};
 
-//Driver Billing and Ride History
+
+	//Loading Existing Rides  for the Driver
+	exports.driverHistory = function(req,res){
+			console.log("I will load History page");
+			res.render('driverRidesHistory');
 	
-	//var Driver_Id = req.session.Driver_Id;
+	}
+	
+	
+	//Driver Billing and Ride History
 	
 	exports.driverRideHistory = function(req, res){
 		
@@ -62,10 +69,12 @@ exports.driverSignUpForm = function(req, res){
 				throw err;
 			} else {
 			
-				
-				res.render('driverRidesHistory');	
-				//res.redirect('/driver/RidesHistory');
+				console.log("sending result back to polls controller");
+				console.log(results);
 				res.send(results);
+				//res.render('driverRidesHistory');	
+				//res.redirect('/driver/RidesHistory');
+				//res.send(results);
 			}
 
 		},driverBillHistory);

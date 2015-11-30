@@ -436,3 +436,19 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 	    .otherwise({ redirectTo: "/" });
 	  
 	    }]);
+	
+	
+	
+	
+	mapsApp.controller('rideCtrl', function($scope, $http, $compile) {
+		//This function will fetch ride history
+		$http.get('/driver/RidesHistory').success(function(response){
+    		console.log("We are back!!");
+			$scope.rides=response;
+    		console.log(response);
+    	});
+	
+	})
+	
+	
+	
