@@ -1,5 +1,4 @@
 var mysql=require('mysql');
-
 var pool = require("./mysqlpool");
 
 var ejs = require("ejs");
@@ -12,23 +11,21 @@ var video=[],items;
 
 
 exports.selectDriver=function(req,res){
+	
 	var json_response=sqlDriver(req.session.username,function(err,json_response){
-		console.log('back to first ');
-		console.log(json_response);
 		res.send(json_response);
+		console.log('Last call');
 		}.bind(this));
 	
 };
-
-
 
 
 function sqlDriver(session,callback)
 {	
 	var DriverID=[], Firstname=[], Lastname=[], D_Address, D_City, D_State, D_ZipCode, DriverPhone=[], 
 	D_Email, D_LicenseID, CarDetails=[], D_Password, DriverRating=[], D_Status; 
-	var sql_query="SELECT * FROM driver WHERE D_Status=1 AND RAND() LIMIT 5 ";
-	console.log(sql_query);
+	var sql_query="SELECT * FROM driver WHERE D_Status=1 ORDER BY RAND() LIMIT 5 ";
+	
 	connection.query(sql_query,function(err,rows)
 	{
 		if(err){
@@ -67,7 +64,7 @@ function sqlDriver(session,callback)
 			coll.find({Driver_ID:{$in:json_response.Driver_ID}}).toArray(function(err, user){
 				for(var i=0;i<user.length;i++)
 					json_response.Video[i]=user[i].url;
-				console.log(json_response);
+				console.log('Am returning');
 				callback(null,json_response);
 				
 			});

@@ -8,10 +8,15 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				//to change location of car to source location
 				var newSource;
 				var markers=[];
+				$scope.bookDriver=0;
+				$scope.timer;
+				$scope.Ride_ID;
+				$scope.estimateFare
 				var p1,p2;
 				//$rootScope.json=[];
 				$scope.json=[];
-				$scope.show="Sangeetha";
+				$scope.dist;
+				if($scope.bookDriver==0){
 					$http({
 			            method: 'POST',
 			            url: '/selectDriver',
@@ -35,7 +40,8 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 								                 "CarDetails": output.D_CarDetails[i],
 								                 "Rating": output.D_Avg_Rating[i],
 								                 "video":output.Video[i],
-								                 "id":i+1//to identify the marker 
+								                 "id":i+1,//to identify the marker 
+								                 "driverSelected":0
 								             };
 								           
 				            	//console.log($rootScope.json);
@@ -45,13 +51,14 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 			        }).error(function(error){
 			        	console.log("error");
 			        });	
+				}
 		
 			  var infowindow = new google.maps.InfoWindow({
 			    content: ""
 			  });
 			  
 			  
-				var iconBase = new google.maps.MarkerImage('uber.png',null,null,null,new google.maps.Size(42, 68));
+				var iconBase = new google.maps.MarkerImage('/uber.png',null,null,null,new google.maps.Size(42, 68));
 				var myLatlng = new google.maps.LatLng(37.335270, -121.880669);  
 				//function initialize() {
 					var mapcenter = new google.maps.LatLng(parseFloat(myLatlng.lat()),parseFloat(myLatlng.lng()));
@@ -65,12 +72,12 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 					var mappoints = generateMapPoints(myLatlng, distanceLimit, numberRandomPoints);
 					//createRandomMapMarkers(map, mappoints);
 					var marker2;
-				
+					$scope.driverSet;
 					//Create markers for the randomly generated points
 						function createRandomMapMarkers(map, mappoints) {
+							
 								for (var i = 0; i < mappoints.length; i++) {
-									
-								var link="#/driverProfile/:"+$scope.json[i].FirstName;
+								
 								var data='<div id="driverDetails">'+
 								'<h5><b> Driver Name: '+$scope.json[i].FirstName+' '+$scope.json[i].LastName+'</h5></b>'+
 								'<h6><b> Phone No: '+$scope.json[i].PhoneNo+'</h6></b>'+
@@ -82,7 +89,12 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 							    '</video>'+
 							    '<br>'+
 							    '<br>'+
+							    '<div ng-if="bookDriver==0 && json['+i+'].driverSelected==0">'+
 							    '<button type="submit" id="btnColor" ng-click="confirmDriver('+i+')">Confirm Driver</button>'+
+							    '</div>'+
+							    '<div ng-if="bookDriver==1 && json['+i+'].driverSelected==1">'+
+							    '<button type="submit" id="btnColor" ng-click="cancelDriver('+i+')">Cancel Driver</button>'+
+							    '</div>'+
 							    '</div>';
 								
 								//Map points without the east/west adjustment
@@ -91,7 +103,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 														position:newmappoint,
 														map: map,
 														icon:iconBase,
-														title: data,
+														title: "Uber Cars",
 														zIndex: 2
 													});
 								markers.push(marker2);
@@ -100,15 +112,58 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 								//bindInfoWindow(marker2, map, infowindow);
 							}
 						};
+						
+						
+		$scope.cancelDriver=function(i){
+			
+			$scope.bookDriver=0;
+			$scope.json[i].driverSelected=0;
+			$timeout.cancel($scope.timer);
+			$http({
+	            method: 'POST',
+	            url: '/cancelRide',
+	            data:{
+	            	
+	            	"Driver_ID":$scope.json[i].Driver_ID,
+	            	"R_Status":1,
+	            	"Ride_ID":$scope.Ride_ID}
+	         }).success(function(output){
+	        	 if(output.statusCode==200)
+	        		 console.log("Ride Inserted");
+	        	 
+	         }).error(function(error){
+	        	 	console.log("Error during insert");
+	         });
+		};
 		$scope.confirmDriver=function(i){
-			//markers[i] newimage
-			//flag
-			//$compile
-			//bindinfoinfo
-			 $timeout(function(){
-				 alert("value "+i);
-				 alert(newSource.lat());
-				 markers[i].setMap(null);
+			$http({
+	            method: 'POST',
+	            url: '/insertRide',
+	            data:{"Source_Add":searchBox.getPlace().name,
+	            	"Destination_Add":searchBox2.getPlace().name, 
+	            	"Driver_ID":$scope.json[i].Driver_ID,
+	            	"R_Distance":$scope.dist,
+	            	"R_Status":0}
+	         }).success(function(output){
+	        	 if(output.statusCode==200)
+	        		 console.log("Ride Inserted");
+	        	 	$scope.Ride_ID=output.Ride_ID;
+	        	 
+	         }).error(function(error){
+	        	 	console.log("Error during insert");
+	         });
+			
+			$scope.bookDriver=1;
+			$scope.json[i].driverSelected=1;
+			$scope.callTimer(i);
+			
+
+		};
+		$scope.callTimer=function(i){
+			
+		$scope.timer=$timeout(function(){
+				  
+				  
 				 alert("Reachng Destination");
 				 markers[i]=new google.maps.Marker({
 						position:newSource,
@@ -124,8 +179,9 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 		
 		$scope.moveToDest=function(i){
 			//insert into rides
+			$scope.calculate();
 			$timeout(function(){
-				markers[i].setMap(null);
+				
 				markers[i]=new google.maps.Marker({
 				position:p2,
 				map: map,
@@ -134,27 +190,45 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				zIndex: 2
 			});
 				var place2 = searchBox2.getPlace();
+								
 				//when place has been found
 				if (place2.geometry) {
-				  marker.setOptions({
+				  markers[i].setOptions({
 					title: place2.name,
 					position: place2.geometry.location
 				  });
 				  if (place2.geometry.viewport) {
-					marker.getMap().fitBounds(place2.geometry.viewport);
+					markers[i].getMap().fitBounds(place2.geometry.viewport);
 				  } else {
-					marker.getMap().setCenter(place2.geometry.location);
+					markers[i].getMap().setCenter(place2.geometry.location);
 				  }
 				   
 				}
 				else {
-				  marker.setOptions({
+				  markers[i].setOptions({
 					title: null
 				  });
 				  alert('place not found');
 				}
 			
 			},6000);
+			
+			$http({
+	            method: 'POST',
+	            url: '/updateRide',
+	            data:{
+	            	"Driver_ID":$scope.json[i].Driver_ID,
+	            	"R_Status":2,
+	            	"R_Amount":$scope.estimateFare,
+	            	"Ride_ID":$scope.Ride_ID}
+	         }).success(function(output){
+	        	 if(output.statusCode==200)
+	        		 console.log("Ride Inserted");
+	        	 
+	         }).error(function(error){
+	        	 	console.log("Error during insert");
+	         });
+			
 		
 		};
 
@@ -174,6 +248,12 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				mappoints.push(randomGeo(center, distance));
 			}
 			return mappoints;
+		}
+		
+		function distance(lat1, lon1, lat2, lon2) {
+			var R = 6371000;
+			var a = 0.5 - Math.cos((lat2 - lat1) * Math.PI / 180) / 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * (1 - Math.cos((lon2 - lon1) * Math.PI / 180)) / 2;
+			return R * 2 * Math.asin(Math.sqrt(a));
 		}
 
 		//Create random lat/long coordinates in a specified radius around a center point
@@ -207,11 +287,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 		}
 
 
-		function distance(lat1, lon1, lat2, lon2) {
-			var R = 6371000;
-			var a = 0.5 - Math.cos((lat2 - lat1) * Math.PI / 180) / 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * (1 - Math.cos((lon2 - lon1) * Math.PI / 180)) / 2;
-			return R * 2 * Math.asin(Math.sqrt(a));
-		}
+	
 
 		  var marker = new google.maps.Marker({
 			position: myLatlng,
@@ -231,8 +307,9 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 			var myLatlng = new google.maps.LatLng(parseFloat(document.getElementById('latitude').value),parseFloat(document.getElementById('longitude').value ));
 			p1=new google.maps.LatLng(parseFloat(document.getElementById('latitude').value),parseFloat(document.getElementById('longitude').value ));
 			var mappoints = generateMapPoints(myLatlng, distanceLimit, numberRandomPoints);
-			/*if(position_changed==1)
+			if(position_changed==1)
 			{	
+				$scope.bookDriver=0;
 				$http({
 		            method: 'POST',
 		            url: '/selectDriver',
@@ -254,7 +331,8 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 							                 "CarDetails": output.D_CarDetails[i],
 							                 "Rating": output.D_Avg_Rating[i],
 							                 "video":output.Video[i],
-							                 "id":i+1//to identify the marker 
+							                 "id":i+1,//to identify the marker
+							                 "driverSelected":0 
 							             };
 							           
 			            	console.log($scope.json);
@@ -265,9 +343,8 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 		        	console.log("error");
 		        });	
 				createRandomMapMarkers(map, mappoints); 
-		  }*/
-			//11/26/2015
-			createRandomMapMarkers(map, mappoints); 
+		  }
+			
 		  });
 
 
@@ -300,6 +377,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				});
 				
 				google.maps.event.addListener(searchBox2,'place_changed', function() {
+				$scope.bookDriver=0;
 				var geocoder = new google.maps.Geocoder();
 				$scope.show=1;
 				var address = document.getElementById("pac-input2").value;
@@ -308,6 +386,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				  {
 				  //alert(results[0].geometry.location.lat(),results[0].geometry.location.lng());
 				  p2=new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+				  $scope.dist=(google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1000).toFixed(2);
 				}
 			});
 				
@@ -385,7 +464,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 			//}
 
 			 
-
+					
 			$scope.calculate=function(){
 
 				if(p1===undefined && p2===undefined)	
@@ -395,7 +474,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 				//console.log("distance"+distance);
 				else
 				{
-				var distance=(google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1000).toFixed(2);
+				distance=(google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1000).toFixed(2);
 				var travelTime= 15;
 				var baseFare=1.95;
 				var safeRidesFee=1.35;
@@ -430,12 +509,13 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 	    })
 	    .when('/driverProfile/:drivername',{
 	  	   
-	      templateUrl: 'partials/driverProfile.ejs',
+	      templateUrl: '/partials/driverProfile.ejs',
 	      controller: ''
 	    })
 	    .otherwise({ redirectTo: "/" });
 	  
 	    }]);
+
 	
 	
 	
@@ -510,3 +590,4 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 	})
 	
 	
+
