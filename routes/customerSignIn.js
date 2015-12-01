@@ -8,7 +8,7 @@ exports.login=function(req,res)
 	email=req.param("email");
 	password=req.param("password");
 	console.log(email+" "+password);
-	var sql_query="SELECT C_Password FROM customer WHERE C_Email=" + connection.escape(email);
+	var sql_query="SELECT Customer_ID,C_Password FROM customer WHERE C_Email=" + connection.escape(email);
 	//console.log(sql_query);
 	connection.query(sql_query,function(err,rows)
 	{
@@ -21,7 +21,8 @@ exports.login=function(req,res)
         		//console.log ("invalid email id");
 		}
 		else if(password === rows[0].C_Password) {
-    			req.session = email;
+    			req.session.username= rows[0].Customer_ID;
+    			console.log('session '+req.session.username);
     			json_responses = {"statusCode" : 200};
     			res.send(json_responses);
     			//console.log ("valid");	

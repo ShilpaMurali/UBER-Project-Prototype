@@ -14,20 +14,12 @@ var express = require('express')
   , selectDriver = require('./routes/selectDriver')
   , adminSignIn = require('./routes/adminSignIn')
   , customerSignIn = require('./routes/customerSignIn')
+  ,bodyParser=require('body-parser')
+  ,rideDetails=require('./routes/rideDetails')
   , driverSignIn = require('./routes/driverSignIn');
 
 var app = express();
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
 
 // MONGO
 
@@ -47,6 +39,22 @@ app.use(expressSession({
 		url: mongoSessionConnectURL
 	})
 }));
+//all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname+'/views');
+app.set('view engine', 'ejs');
+app.use(express.favicon());
+
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded());
+
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -104,7 +112,9 @@ app.get('/partials/:filename',routes.partials);
 app.get('/partials/driverProfile/:drivername',routes.partials);
 app.post('/selectDriver',selectDriver.selectDriver);
 
-
+app.post('/insertRide',rideDetails.insertRide);
+app.post('/cancelRide',rideDetails.cancelRide);
+app.post('/updateRide',rideDetails.updateRide);
 //connect
 //connect to the mongo collection session and then createServer
 mongo.connect(mongoSessionConnectURL, function(){
