@@ -33,7 +33,7 @@
 
   <body  ng-app="MyApp"  >
  
-<div ng-controller="DemoCtrl">
+<div ng-controller="TestCtrl">
 
 
  <nav class="navbar navbar-default" style="box-shadow: 3px 3px 5px #000000; background-color: #padding-bottom: 10px;box-shadow: 3px 3px 5px #000000; background-color: #000000;">
@@ -81,19 +81,19 @@
 
 
   <md-content layout-padding="">
-		<h1 align="center">Driver Signup</h1>
-  <form name="driverForm" ng-submit="addDriver()">
+		<h1 align="center">Customer Signup</h1>
+  <form name="driverForm" ng-submit="addCustomer()">
   
   
   
   <div layout="" layout-sm="column">
          
         <md-input-container>
-          <input ng-model="driver.D_Firstname" placeholder="First Name" ng-required="true">
+          <input ng-model="customer.C_Firstname" placeholder="First Name" ng-required="true">
         </md-input-container>
         
         <md-input-container >
-          <input ng-model="driver.D_Lastname" placeholder="Last Name" ng-required="true">
+          <input ng-model="customer.C_Lastname" placeholder="Last Name" ng-required="true">
         </md-input-container>
         
   </div>
@@ -101,27 +101,27 @@
 
   <div layout="column" layout-lg="column">
      <md-input-container class="md-block">
-     <input ng-model="driver.D_Email" type="email" placeholder="Email" ng-required="true">
+     <input ng-model="customer.C_Email" type="email" placeholder="Email" ng-required="true">
     </md-input-container> 
   </div>
      
      <div layout="column" layout-lg="column">
      <md-input-container class="md-block">
-     <input ng-model="driver.D_Phone" type="number" placeholder="Phone" ng-required="true">
+     <input ng-model="customer.C_Phone" type="number" placeholder="Phone" ng-required="true">
     </md-input-container> 
   </div>
      
      
      <div layout="column" layout-lg="column">
       <md-input-container class="md-block">
-     <input ng-model="driver.D_Password" type="password" placeholder="Password (At least 5 character)" ng-required="true">
+     <input ng-model="customer.C_Password" type="password" placeholder="Password (At least 5 character)" ng-required="true">
      </md-input-container>
 	</div>
 	
 	<div layout="column" layout-lg="column">
 	      <md-input-container class="md-block">
         <label>Address</label>
-        <input ng-model="driver.D_Address">
+        <input ng-model="customer.C_Address">
       </md-input-container>
      </div>
       
@@ -129,14 +129,14 @@
       <div layout="column" layout-lg="column">
         <md-input-container>
           <label>City</label>
-          <input ng-model="driver.D_City" ng-required="true">
+          <input ng-model="customer.C_City" ng-required="true">
         </md-input-container>
         </div>
         
         <div layout="column" layout-lg="column" >
         <md-input-container>
           <label>State</label>
-          <md-select ng-model="driver.D_State">
+          <md-select ng-model="customer.C_State">
             <md-option ng-repeat="state in states" value="{{state.abbrev}}">
               {{state.abbrev}}
             </md-option>
@@ -147,7 +147,7 @@
         <div layout="column" layout-lg="column">
         <md-input-container>
           <label>Zip Code</label>
-          <input name="Zip Code" ng-model="driver.D_ZipCode" placeholder="12345"
+          <input name="Zip Code" ng-model="customer.C_ZipCode" placeholder="12345"
                  required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
           <div ng-messages="driverForm.postalCode.$error" role="alert" multiple>
             <div ng-message="required" class="my-message">You must supply a Zip Code.</div>
@@ -162,7 +162,7 @@
         </div>
 
 <div layout="column" layout-lg="column">
-    <md-button class="md-raised md-primary" ng-click="D_Signup()">Sign Up</md-button>  
+    <md-button class="md-raised md-primary" ng-click="C_Signup()">Sign Up</md-button>  
 </div>
 
 
@@ -184,7 +184,7 @@
 <script>
    angular
   .module('MyApp')
-  .controller('DemoCtrl', function($scope, $http) {
+  .controller('TestCtrl', function($scope, $http) {
 
     $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
     'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
@@ -195,14 +195,14 @@
 
  
  
- $scope.D_Signup = function() {
+ $scope.C_Signup = function() {
       
-      console.log("New driver Details");
-      console.log($scope.driver.D_Firstname); 
+      console.log("New Customer Details");
+      console.log($scope.customer.C_Firstname); 
        
          
         
-        $http.post('/signup/driver/submit' ,{D_Firstname:$scope.driver.D_Firstname, D_Lastname:$scope.driver.D_Lastname, D_Address:$scope.driver.D_Address, D_City:$scope.driver.D_City, D_State:$scope.driver.D_State, D_ZipCode:$scope.driver.D_ZipCode, D_Phone:$scope.driver.D_Phone, D_Email:$scope.driver.D_Email, D_Password:$scope.driver.D_Password}).success(function(response){
+        $http.post('/homepage/signup/customer/submit' ,{C_Firstname:$scope.customer.C_Firstname, C_Lastname:$scope.customer.C_Lastname, C_Address:$scope.customer.C_Address, C_City:$scope.customer.C_City, C_State:$scope.customer.C_State, C_ZipCode:$scope.customer.C_ZipCode, C_Phone:$scope.customer.C_Phone, C_Email:$scope.customer.C_Email, C_Password:$scope.customer.C_Password}).success(function(response){
         console.log("Hi i am back in controller");
         window.location = '/'
 		});

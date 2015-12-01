@@ -82,6 +82,9 @@ app.get('/homepage/signup/customer', signUpIn.customerSignUp);
 //Driver Signup form
 app.post('/homepage/signup/driver/submit', driver.driverSignUpForm);
 
+//Customer Signup form
+app.post('/homepage/signup/customer/submit', customer.customerSignUpForm);
+
 // Admin
 app.post('/adminSignIn', adminSignIn.adminSignIn);
 
@@ -122,6 +125,11 @@ app.post('/selectDriver',selectDriver.selectDriver);
 app.post('/insertRide',rideDetails.insertRide);
 app.post('/cancelRide',rideDetails.cancelRide);
 app.post('/updateRide',rideDetails.updateRide);
+
+//Logout
+app.get('/logout',customerSignIn.logout);
+
+
 //connect
 //connect to the mongo collection session and then createServer
 mongo.connect(mongoSessionConnectURL, function(){
