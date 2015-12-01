@@ -447,7 +447,7 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 			$scope.rides=response;
     		console.log(response);
     	});
-	
+		
 		
 		//This function will fetch ride details
     	$scope.ridedetail = function(Ride_ID){
@@ -473,5 +473,40 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
     	
 	})
 	
+	
+	mapsApp.controller('cust_rideCtrl', function($scope, $http, $compile) {
+		//This function will fetch ride history
+		$http.get('/customer/RidesHistory').success(function(response){
+    		console.log("We are back!!");
+			$scope.rides=response;
+    		console.log(response);
+    	});
+		
+		
+		//This function will fetch ride details
+    	$scope.ridedetail = function(Ride_ID){
+    		console.log("in controller " + Ride_ID);
+    		$http.post('/rideDetails',{Ride_ID:Ride_ID}).success(function(response){
+    			console.log(response);
+    			$scope.rideDetails = response;
+    		});
+    	}
+    	
+    	
+    	//This function will delete ride details
+    	$scope.ridedelete = function(Ride_ID){
+    		console.log("in controller " + Ride_ID);
+    		$http.post('/rideDelete',{Ride_ID:Ride_ID}).success(function(response){
+    			console.log(response);
+    			window.location = '/driver/RidesHistoryLoad';
+    			$scope.rideDelete = response;
+    			
+    		});
+    	
+    	}
+    	
+    	
+    	
+	})
 	
 	

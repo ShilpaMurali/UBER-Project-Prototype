@@ -1,12 +1,22 @@
+/*
 var mysql = require('mysql');
+
 var pool = mysql.createPool({
 	connectionLimit:100,
 	host:'localhost',
 	user: 'root',
-	password: 'admin',
+	password: 'root',
 	database: 'UBER',
 	debug: false
 });
+
+*/
+
+var ejs = require("ejs");
+var mysql = require('./mysql');
+var app = require('../app');
+var session = require('client-sessions');
+
 
 exports.renderEditProfilePage = function (req,res) {
 	res.render("EditCustomerProfile");
@@ -73,3 +83,33 @@ exports.updateCustomerProfile = function (req,res) {
         });
 	});
 };
+
+
+//Loading Existing Rides  for the Customer
+exports.customerHistory = function(req,res){
+		console.log("I will load History page");
+		res.render('customerRidesHistory');
+
+}
+
+//Customer Billing and Ride History
+
+exports.customerRideHistory = function(req, res){
+	var customerBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Customer_ID = '2'; ";
+		
+		console.log("Query is:"+customerBillHistory);
+
+		mysql.fetchData(function(err,results){
+			if(err){
+				throw err;
+			} else {
+			
+				console.log("sending result back to the controller");
+				console.log(results);
+				res.send(results);
+
+			}
+
+		},customerBillHistory);
+
+		};

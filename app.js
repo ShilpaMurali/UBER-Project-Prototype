@@ -59,6 +59,12 @@ app.get('/users', user.list);
 app.get('/homepage/signIn', signUpIn.signIn);
 app.get('/homepage/signUp', signUpIn.signUp);
 app.get('/homepage/signin/customer', signUpIn.customerSignIn);
+// Customer Ride History
+app.get('/customer/RidesHistory',customer.customerRideHistory);
+app.get('/customer/RidesHistoryLoad',customer.customerHistory);
+
+
+
 app.get('/homepage/signin/driver', signUpIn.driverSignIn);
 app.get('/homepage/signin/admin', signUpIn.adminSignIn);
 //Driver,Customer Signup page
@@ -92,10 +98,11 @@ app.get('/customer/editProfile',customer.renderEditProfilePage);
 app.post('/customer/updateProfile',customer.updateCustomerProfile);
 
 
-//Opening individual Rides
+
+//Opening individual Rides for driver
 app.post('/rideDetails', driver.rideDetails);
 
-//Opening individual Polls
+//Opening individual Polls for customer
 app.post('/rideDelete', driver.rideDelete);
 
 

@@ -65,12 +65,10 @@ exports.driverSignUpForm = function(req, res){
 				throw err;
 			} else {
 			
-				console.log("sending result back to polls controller");
+				console.log("sending result back to the controller");
 				console.log(results);
 				res.send(results);
-				//res.render('driverRidesHistory');	
-				//res.redirect('/driver/RidesHistory');
-				//res.send(results);
+
 			}
 
 		},driverBillHistory);
@@ -123,7 +121,7 @@ exports.driverSignUpForm = function(req, res){
 			
 			var existingRideDelete = " DELETE FROM `UBER`.`Ride_History` WHERE `Ride_ID`='"+Ride_ID+"'; ";
 				
-			//	" select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Ride_ID = '"+Ride_ID+"'; ";
+			
 			
 			mysql.fetchData(function(err,result){
 				if(err){
@@ -143,46 +141,4 @@ exports.driverSignUpForm = function(req, res){
 		
 		
 	
-	/*
-
-//Successful Signup Form Submission 
-exports.signup = function(req, res){
-
-var newUser= "INSERT INTO test.users (`emailid`, `password`, `firstname`, `lastname`, `dob`, `gender`) VALUES ('"+req.param("emailid")+"', '" + req.param("password") +"' , '" + req.param("firstname") +"' , '" + req.param("lastname") +"' , '" + req.param("dob") +"' , '" + req.param("gender") +"');";
-console.log("Query is:"+newUser);
-
-var newUserAbout= "INSERT INTO test.about (`emailid`) VALUES ('"+req.param("emailid")+"' );";
-console.log("Query is:"+newUserAbout);
-
-var newUserInterests= "INSERT INTO test.interests (`emailid`) VALUES ('"+req.param("emailid")+"' );";
-console.log("Query is:"+newUserInterests);
-
-mysql.fetchData(function(err,results){
-	if(err){
-		throw err;
-	}
-
-	res.render("../views/successsignup.ejs", { port: '3000' }  );
 	
-},newUser);
-
-
-mysql.fetchData(function(err,results){
-	if(err){
-		throw err;
-	}
-
-	
-},newUserAbout);
-
-mysql.fetchData(function(err,results){
-	if(err){
-		throw err;
-	}
-	
-},newUserInterests);
-
-
-};
-
-*/
