@@ -17,14 +17,13 @@ exports.renderViewProfile = function (req,res) {
 };
 
 exports.getProfileDetails = function (req,res) {
-	req.session.driverid = 1;
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from driver where Driver_ID = ?",[req.session.driverid],function(err,rows) {
+        connection.query("select * from driver where Driver_ID = ?",[req.session.username],function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -49,7 +48,6 @@ exports.getProfileDetails = function (req,res) {
 };
 
 exports.updateDriverProfile = function (req,res) {
-	req.session.driverid = 1;
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
@@ -61,7 +59,7 @@ exports.updateDriverProfile = function (req,res) {
         		"D_Email=?,D_LicenseID=?,D_CarDetails=?,D_Password=?" +
         		"where Driver_ID = ?",
         		[req.param("FirstName"),req.param("LastName"),req.param("Address"),req.param("City"),req.param("State"),req.param("ZipCode"),
-        		 req.param("Contact"),req.param("Email"),req.param("LicenseID"),req.param("CarDetails"),req.param("Password"),req.session.driverid],
+        		 req.param("Contact"),req.param("Email"),req.param("LicenseID"),req.param("CarDetails"),req.param("Password"),req.session.username],
         		function(err,rows) {
         			
         	if(err) {                              

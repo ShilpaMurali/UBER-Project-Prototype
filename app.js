@@ -5,6 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , admin = require ('./routes/admin')
   , user = require('./routes/user')
   , signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
   , driver = require('./routes/driver')
@@ -15,6 +16,7 @@ var express = require('express')
   , path = require('path')
   , selectDriver = require('./routes/selectDriver')
   , adminSignIn = require('./routes/adminSignIn')
+  , adminRoutes = require('./routes/adminRoutes')
   , customerSignIn = require('./routes/customerSignIn')
   ,bodyParser=require('body-parser')
   ,rideDetails=require('./routes/rideDetails')
@@ -88,7 +90,41 @@ app.post('/homepage/signup/driver/submit', driver.driverSignUpForm);
 app.post('/homepage/signup/customer/submit', customer.customerSignUpForm);
 
 // Admin
-app.post('/adminSignIn', adminSignIn.adminSignIn);
+//app.post('/adminSignIn', adminSignIn.adminSignIn);
+app.post('/homepage/signin/login', adminSignIn.adminSignIn);
+
+app.get('/admCustomerList', adminRoutes.admCustomerList);
+app.get('/admDriverList', adminRoutes.admDriverList);
+app.get('/admSearchBill', adminRoutes.admSearchBill);
+app.get('/searchBillFunc', adminRoutes.searchBillFunc);
+app.get('/admReviewDriver', adminRoutes.admReviewDriver);
+app.get('/searchDriverFunc', adminRoutes.searchDriverFunc);
+app.get('/admReviewCustomer', adminRoutes.admReviewCustomer);
+app.get('/searchCustomerFunc', adminRoutes.searchCustomerFunc);
+app.get('/admRevenuePDay', adminRoutes.admRevenuePDay);
+app.get('/dayRevenueFunc', adminRoutes.dayRevenueFunc);
+app.get('/admRevenuePLoc', adminRoutes.admRevenuePLoc);
+app.get('/locRevenueFunc', adminRoutes.locRevenueFunc);
+app.get('/admGraphs', adminRoutes.admGraphPg);
+app.get('/admGraphBack', adminRoutes.admGraphBack);
+app.get('/adminLogout',adminRoutes.adminLogout);
+
+//********************** ADMIN GRAPHS ********************** //
+app.get('/getRidesPerArea',admin.renderRidesPerAreaGraph);
+app.get('/getRidesPerAreaStatistics',admin.getRidesPerAreaStatistics);
+
+app.get('/getRevenuePerLocation',admin.renderRevenuePerAreaGraph);
+app.get('/getRevenuePerAreaStatistics',admin.getRevenuePerAreaStatistics);
+
+app.get('/getRevenuePerDay',admin.renderRevenuePerDayGraph);
+app.post('/getRevenuePerDayStatistics',admin.getRevenuePerDayStatistics);
+
+app.get('/getRidesPerDriver',admin.renderRidesPerDriverGraph);
+app.get('/getRidesPerDriverStatistics',admin.getRidesPerDriverStatistics);
+
+app.get('/getRidesPerCustomer',admin.renderRidesPerCustomerGraph);
+app.get('/getRidesPerCustomerStatistics',admin.getRidesPerCustomerStatistics);
+
 
 // Driver SignIn
 app.post('/homepage/signin/driver/login/',driverSignIn.login);

@@ -529,6 +529,12 @@ var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
 
 
 		mapsApp.controller('CustomerController', function($scope,$http) {
+			$scope.invalid_Phone = false;
+			$scope.invalid_Cardnumber = false;
+			$scope.invalid_Cardcvv = false;
+			$scope.invalid_Password = false;
+			$scope.invalid_Expiry = false;
+			
 			$scope.init = function () {
 				$http({
 					method : "GET",
@@ -561,33 +567,55 @@ var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
 
 			
 			$scope.saveChangesToDB = function() {
-		    	$http({
-					method : "POST",
-					url : '/customer/updateProfile',
-					data : {
-						"FirstName" : $scope.customer.FirstName,
-						"LastName" : $scope.customer.LastName,
-						"Email" : $scope.customer.Email,
-						"Contact" : $scope.customer.Contact,
-						"Address" : $scope.customer.Address,
-						"City" : $scope.customer.City,
-						"CardNumber" : $scope.customer.CardNumber,
-						"State" : $scope.customer.State,
-						"CardCVV" : $scope.customer.CardCVV,
-						"ZipCode" : $scope.customer.ZipCode,
-						"CardZIP" : $scope.customer.Zip,
-						"CardPWD" : $scope.customer.Password,
-						"CardEXP" : $scope.customer.Expiry
-					}
-				}).success(function(data) {
-						//checking the response data for statusCode
-						if (data.statusCode === 200) {
-							//window.location.assign("/customer/viewProfile");
-							alert('Changes Saved Successfully');
+				if($scope.customer.Contact.length >= 11) {
+					$scope.invalid_Phone=true;
+				}
+				else if ($scope.customer.CardNumber >=17) {
+					$scope.invalid_Cardnumber = true;
+				}
+				else if ($scope.customer.CardCVV >=4 ) {
+					$scope.invalid_Cardcvv = true;
+				}
+				else if($scope.customer.Password <=3) {
+					$scope.invalid_Password = true;
+				}
+				else if($scope.customer.Expiry<=4 || $scope.customer.Expiry >= 6) {
+					$scope.invalid_Expiry = true;
+				}
+				else {
+					$http({
+						method : "POST",
+						url : '/customer/updateProfile',
+						data : {
+							"FirstName" : $scope.customer.FirstName,
+							"LastName" : $scope.customer.LastName,
+							"Email" : $scope.customer.Email,
+							"Contact" : $scope.customer.Contact,
+							"Address" : $scope.customer.Address,
+							"City" : $scope.customer.City,
+							"CardNumber" : $scope.customer.CardNumber,
+							"State" : $scope.customer.State,
+							"CardCVV" : $scope.customer.CardCVV,
+							"ZipCode" : $scope.customer.ZipCode,
+							"CardZIP" : $scope.customer.Zip,
+							"CardPWD" : $scope.customer.Password,
+							"CardEXP" : $scope.customer.Expiry
 						}
-					}).error(function(error) {
-							
-					});
+					}).success(function(data) {
+							//checking the response data for statusCode
+							if (data.statusCode === 200) {
+								//window.location.assign("/customer/viewProfile");
+								alert('Changes Saved Successfully');
+								$scope.invalid_Phone = false;
+								$scope.invalid_Cardnumber = true;
+								$scope.invalid_Cardcvv = true;
+								$scope.invalid_Password = true;
+								$scope.invalid_Expiry = true;
+							}
+						}).error(function(error) {
+								
+						});
+				}
 			};
 			
 			$scope.loadCustomerPageForView = function() {

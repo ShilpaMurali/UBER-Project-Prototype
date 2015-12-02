@@ -43,6 +43,7 @@
 			</td>
 			<td style="width:400px">
 				<p style="color:blue">Contact</p>
+				<span style="color:red" ng-show="invalid_Phone"> Phone number entered is invalid </span>
 				<a href="#" editable-textarea="customer.Contact" e-rows="2" e-cols="20">
     				<pre>{{ customer.Contact }}</pre>
     			</a>

@@ -17,7 +17,7 @@ exports.renderViewProfile = function (req,res) {
 };
 
 exports.getProfileDetails = function (req,res) {
-	console.log(req.session.customerid);
+	
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
@@ -50,8 +50,7 @@ exports.getProfileDetails = function (req,res) {
 };
 
 exports.updateCustomerProfile = function (req,res) {
-	console.log("update customer profile",req.session.customerid);
-	req.session.customerid = 1;
+	
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
