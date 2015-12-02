@@ -8,7 +8,9 @@ var express = require('express')
   , user = require('./routes/user')
   , signUpIn = require('./routes/signUpIn')//frontpage,signin,signup
   , driver = require('./routes/driver')
+  , driverhpp = require('./routes/driverHPP')
   , customer = require('./routes/customer')
+  , customerhpp = require('./routes/customerHPP')
   , http = require('http')
   , path = require('path')
   , selectDriver = require('./routes/selectDriver')
@@ -93,21 +95,32 @@ app.post('/homepage/signin/driver/login/',driverSignIn.login);
 // Customer SignIn
 app.post('/homepage/signin/customer/login/',customerSignIn.login);
 
+//Maps - Customer Homepage
+app.get('/homepage/signin/customer/homepage',customerSignIn.rendermaps);
+
+//Driver Homepage
+app.get('/homepage/signin/driver/homepage',driverSignIn.renderHomepage);
+app.get('/getDriverHomePageDetails',driverhpp.getDriverHomePageDetails);
+
+//ViewCustomerProfile
+app.get('/customer/viewProfile',customerhpp.renderViewProfile);
+app.get('/customer/getProfilePageDetails',customerhpp.getProfileDetails);
+
+//ViewDriverProfile
+app.get('/driver/viewProfile',driverhpp.renderViewProfile);
+app.get('/driver/getProfilePageDetails',driverhpp.getProfileDetails);
+
+
+//EditCustomerProfile
+app.get('/customer/editProfile',customerhpp.renderEditProfilePage);
+app.post('/customer/updateProfile',customerhpp.updateCustomerProfile);
+
+//EditDriverProfile
+app.get('/driver/editProfile',driverhpp.renderEditProfilePage);
+app.post('/driver/updateProfile',driverhpp.updateDriverProfile);
 
 app.get('/driver/RidesHistory',driver.driverRideHistory);
 app.get('/driver/RidesHistoryLoad',driver.driverHistory);
-
-//Maps
-app.get('/homepage/signin/customer/maps',customerSignIn.rendermaps);
-
-//ViewCustomerProfile
-app.get('/customer/viewProfile',customer.renderCustomerProfilePage);
-app.get('/customer/getProfilePageDetails',customer.getProfileDetails);
-
-//EditCustomerProfile
-app.get('/customer/editProfile',customer.renderEditProfilePage);
-app.post('/customer/updateProfile',customer.updateCustomerProfile);
-
 
 
 //Opening individual Rides for driver
@@ -119,7 +132,7 @@ app.post('/rideDelete', driver.rideDelete);
 
 //partials
 app.get('/partials/:filename',routes.partials);
-app.get('/partials/driverProfile/:drivername',routes.partials);
+//app.get('/partials/driverProfile/:drivername',routes.partials);
 app.post('/selectDriver',selectDriver.selectDriver);
 
 app.post('/insertRide',rideDetails.insertRide);

@@ -1,4 +1,4 @@
-var mapsApp = angular.module('myMap', ['ngRoute']);
+var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
 				mapsApp.controller('mapsController', function($timeout,$compile,$rootScope,$scope,$http,$route, $location, $routeParams) {
 				//google.maps.event.addDomListener(window, 'load', initialize);
 				var distanceLimit = 500; //in meters
@@ -507,15 +507,101 @@ var mapsApp = angular.module('myMap', ['ngRoute']);
 	      templateUrl: '/partials/map_1.ejs',
 	      controller: 'mapsController'
 	    })
-	    .when('/driverProfile/:drivername',{
+	    .when('/customer/viewProfile',{
 	  	   
-	      templateUrl: '/partials/driverProfile.ejs',
-	      controller: ''
+	      templateUrl: '/partials/ViewCustomerProfile.ejs',
+	      controller: 'CustomerController'
 	    })
+	    .when('/customer/editProfile',{
+	  	   
+	      templateUrl: '/partials/EditCustomerProfile.ejs',
+	      controller: 'CustomerController'
+	    })
+	  
 	    .otherwise({ redirectTo: "/" });
 	  
 	    }]);
 
+	
+	mapsApp.run(function(editableOptions) {
+		  editableOptions.theme = 'bs3';
+		});
+
+
+		mapsApp.controller('CustomerController', function($scope,$http) {
+			$scope.init = function () {
+				$http({
+					method : "GET",
+					url : '/customer/getProfilePageDetails',             //gets only details
+					data : {
+					}
+				}).success(function(data) {
+						if (data.statusCode === 200) {
+							$scope.customer = {
+									FirstName: data.firstname,
+									LastName: data.lastname,
+									Email: data.email,
+									Contact: data.contact,
+									Address: data.address,
+									City: data.city,
+									CardNumber:data.cardnumber,
+									State: data.state,
+									CardCVV: data.cardcvv,
+									ZipCode: data.zipcode,
+									Zip: data.cardzip,
+									Password: data.password,
+									Expiry: data.cardexpiry,
+									Rating:data.rating
+							};
+						}
+					}).error(function(error) {
+							
+					});
+			};
+
+			
+			$scope.saveChangesToDB = function() {
+		    	$http({
+					method : "POST",
+					url : '/customer/updateProfile',
+					data : {
+						"FirstName" : $scope.customer.FirstName,
+						"LastName" : $scope.customer.LastName,
+						"Email" : $scope.customer.Email,
+						"Contact" : $scope.customer.Contact,
+						"Address" : $scope.customer.Address,
+						"City" : $scope.customer.City,
+						"CardNumber" : $scope.customer.CardNumber,
+						"State" : $scope.customer.State,
+						"CardCVV" : $scope.customer.CardCVV,
+						"ZipCode" : $scope.customer.ZipCode,
+						"CardZIP" : $scope.customer.Zip,
+						"CardPWD" : $scope.customer.Password,
+						"CardEXP" : $scope.customer.Expiry
+					}
+				}).success(function(data) {
+						//checking the response data for statusCode
+						if (data.statusCode === 200) {
+							//window.location.assign("/customer/viewProfile");
+							alert('Changes Saved Successfully');
+						}
+					}).error(function(error) {
+							
+					});
+			};
+			
+			$scope.loadCustomerPageForView = function() {
+						    window.location.assign("/customer/viewProfile");		// calls ViewCustomerProfile.ejs
+			};
+			
+			$scope.loadCustomerPageForEdit = function() {
+		    			    window.location.assign("/customer/editProfile");		// calls editableform.ejs
+			};
+			  
+		});
+	
+	
+	
 	
 	
 	

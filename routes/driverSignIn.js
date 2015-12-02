@@ -40,6 +40,12 @@ exports.login=function(req,res)
   });
 };
 
+exports.renderHomepage = function(req,res)
+{
+		
+		res.render('DriverHP');
+};
+
 exports.logout = function(req,res)
 {
 		req.session.destroy();
