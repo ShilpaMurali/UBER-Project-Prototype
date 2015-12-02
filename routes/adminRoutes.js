@@ -4,7 +4,7 @@ var pool = mysql.createPool({
 	connectionLimit:100,
 	host:'localhost',
 	user: 'root',
-	password: 'shilpa',
+	password: 'admin',
 	database: 'UBER',
 	debug: false
 });
@@ -13,6 +13,7 @@ var pool = mysql.createPool({
  */
 exports.admCustomerList = function (req,res) {
 	var data = [];
+	var cid;
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
@@ -24,8 +25,13 @@ exports.admCustomerList = function (req,res) {
         		throw err;
         	}
         	for(i=0;i<rows.length;i++) {
-        		var json_responses = {"statusCode" : 200,
-            			"customerID": rows[i].Customer_ID,
+        			var str = (rows[i].Customer_ID).toString();
+        			if(str.length === 9)
+        				cid = str.substring(0,3)+"-"+str.substring(3,6)+"-"+str.substring(6,9);
+        			else
+        				cid = str;
+        		    var json_responses = {"statusCode" : 200,
+            			"customerID": cid,
             			"firstname" : rows[i].C_Firstname,
             			"email": rows[i].C_Email};
         		data.push(json_responses);
@@ -43,6 +49,7 @@ exports.admCustomerList = function (req,res) {
  */
 exports.admDriverList = function (req,res) {
 	var data = [];
+	var did;
 	pool.getConnection(function(err,connection){
         if (err) {
           connection.release();
@@ -54,8 +61,13 @@ exports.admDriverList = function (req,res) {
         		throw err;
         	}
         	for(i=0;i<rows.length;i++) {
+        		var str = (rows[i].Driver_ID).toString();
+    			if(str.length === 9)
+    				did = str.substring(0,3)+"-"+str.substring(3,6)+"-"+str.substring(6,9);
+    			else
+    				did = str;
         		var json_responses = {"statusCode" : 200,
-            			"driverID": rows[i].Driver_ID,
+            			"driverID": did,
             			"firstname" : rows[i].D_Firstname,
             			"email": rows[i].D_Email};
         		data.push(json_responses);
@@ -408,7 +420,7 @@ exports.searchBillFunc = function (req,res) {
           return;
         } 
 
-        connection.query("select * from ride_history where Billing_ID = '"+ enteredId + "'and R_Status=1",function(err,rows) {
+        connection.query("select * from ride_history where Ride_ID = '"+ enteredId + "'and R_Status=1",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -424,14 +436,23 @@ var customerId = rows[0].Customer_ID;
 var driverId = rows[0].Driver_ID;
 var customerFirst;
 var driverFirst;
+var res;
         		connection.query("select C_Firstname,C_Lastname from customer where Customer_ID = ?",[customerId],function(err,custname) {
         			customerFirst = custname[0].C_Firstname + " " + custname[0].C_Lastname;
         			console.log("customername:"+ customerFirst);
         			connection.query("select D_Firstname,D_Lastname from driver where Driver_ID = ?",[driverId],function(err,drivname) {
         			driverFirst = drivname[0].D_Firstname + " " + drivname[0].D_Lastname;
         			console.log("customername:"+ driverFirst);
+        			var str = (rows[0].Ride_ID).toString();
+        			if(str.length === 9) {
+        				res = str.substring(0,3)+"-"+str.substring(3,6)+"-"+str.substring(6,9);
+        			}
+        			else {
+        				res = str;
+        			}
+        			
                		var json_responses = {"statusCode" : 200,
-                			"rideId" : rows[0].Ride_ID,
+                			"rideId" : res,
                 			"distance" : rows[0].R_Distance,
                 			"amount" : rows[0].R_Amount,
                 			"source" : rows[0].Source_Add,

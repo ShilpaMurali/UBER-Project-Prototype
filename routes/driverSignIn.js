@@ -10,7 +10,7 @@ exports.login=function(req,res)
 	email=req.param("email");
 	password=req.param("password");
 	console.log(email+" "+password);
-	var sql_query="SELECT D_Firstname,D_Password FROM driver WHERE D_Email=" + connection.escape(email);
+	var sql_query="SELECT Driver_ID,D_Password FROM driver WHERE D_Email=" + connection.escape(email);
 	//console.log(sql_query);
 	connection.query(sql_query,function(err,rows)
 	{
@@ -23,7 +23,7 @@ exports.login=function(req,res)
         		//console.log ("invalid email id");
 		}
 		else if(bcrypt.compareSync(password,rows[0].D_Password)) {
-    			req.session.username = rows[0].D_Firstname;
+    			req.session.username = rows[0].Driver_ID;
     			json_responses = {"statusCode" : 200};
     			res.send(json_responses);
     			//console.log ("valid");	
