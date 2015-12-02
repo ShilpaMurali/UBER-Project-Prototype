@@ -6,6 +6,7 @@ var ejs = require("ejs");
 var mysql = require('./mysql');
 var app = require('../app');
 var session = require('client-sessions');
+var bcrypt = require('bcrypt-nodejs');
 
 exports.driverSignUp=function(req, res) {
 
@@ -24,7 +25,7 @@ exports.driverSignUp=function(req, res) {
 
 
 exports.driverSignUpForm = function(req, res){
-	var newDriver= " INSERT INTO uber.Driver (`D_Firstname`, `D_Lastname`, `D_Address`, `D_City`, `D_State`, `D_ZipCode`, `D_Phone`, `D_Email`, `D_Password`) VALUES ('"+req.param("D_Firstname")+"', '" + req.param("D_Lastname") +"' , '" + req.param("D_Address") +"' , '" + req.param("D_City") +"', '" + req.param("D_State") +"' , '" + req.param("D_ZipCode") +"'  , '" + req.param("D_Phone") +"' , '" + req.param("D_Email") +"' , '" + req.param("D_Password") +"');";
+	var newDriver= " INSERT INTO uber.Driver (`D_Firstname`, `D_Lastname`, `D_Address`, `D_City`, `D_State`, `D_ZipCode`, `D_Phone`, `D_Email`, `D_Password`) VALUES ('"+req.param("D_Firstname")+"', '" + req.param("D_Lastname") +"' , '" + req.param("D_Address") +"' , '" + req.param("D_City") +"', '" + req.param("D_State") +"' , '" + req.param("D_ZipCode") +"'  , '" + req.param("D_Phone") +"' , '" + req.param("D_Email") +"' , '" + bcrypt.hashSync(req.param("D_Password"),null,null) +"');";
 		
 	
 	
@@ -134,11 +135,4 @@ exports.driverSignUpForm = function(req, res){
 					
 				}
 			},existingRideDelete);
-		}			
-				
-		
-		
-		
-		
-	
-	
+		}	

@@ -6,7 +6,7 @@ var pool  = mysql.createPool({
 	  connectionLimit : 100,
 	  host: "localhost",
 		user: "root",
-		password: "admin",
+		password: "shilpa",
 		database:"uber"
 	});
 return pool;

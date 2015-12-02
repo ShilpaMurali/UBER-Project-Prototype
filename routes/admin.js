@@ -3,7 +3,7 @@ var pool = mysql.createPool({
 	connectionLimit:100,
 	host:'localhost',
 	user: 'root',
-	password: 'admin',
+	password: 'shilpa',
 	database: 'UBER',
 	debug: false
 });
@@ -67,7 +67,7 @@ exports.getRevenuePerDayStatistics = function (req,res) {
         			"RideID":labels,
         			"R_Amount":data
         	};
-        	console.log(json_responses);
+        	//console.log(json_responses);
 			res.send(json_responses);
         });
 	});
@@ -104,7 +104,7 @@ exports.getRevenuePerAreaStatistics = function (req,res) {
         			"Destinations":labels,
         			"TotalRevenue":data
         	};
-        	console.log(json_responses);
+        	//console.log(json_responses);
 			res.send(json_responses);
         });
 	});
@@ -167,13 +167,13 @@ exports.getRidesPerDriverStatistics = function (req,res) {
         			}
         			dataArr.push(data);
         		}
-        		console.log(mainArr);
-        		console.log(dataArr);
+        		//console.log(mainArr);
+        		//console.log(dataArr);
         		json_responses = {"statusCode" : 200,
             			"Destinations":labels,
             			"TotalRides": dataArr
             	};
-    			console.log(json_responses);
+    			//console.log(json_responses);
     			res.send(json_responses);
         		
         	});
@@ -236,8 +236,8 @@ exports.getRidesPerCustomerStatistics = function (req,res) {
         			}
         			dataArr.push(data);
         		}
-        		console.log(mainArr);
-        		console.log(dataArr);
+        		//console.log(mainArr);
+        		//console.log(dataArr);
         		json_responses = {"statusCode" : 200,
             			"Destinations":labels,
             			"TotalRides": dataArr

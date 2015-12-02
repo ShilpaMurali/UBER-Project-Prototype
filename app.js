@@ -178,6 +178,8 @@ app.post('/updateRide',rideDetails.updateRide);
 //Logout
 app.get('/logout',customerSignIn.logout);
 
+//DeleteAccount
+app.get('/deleteAccount',customerSignIn.deleteAccount);
 
 //connect
 //connect to the mongo collection session and then createServer

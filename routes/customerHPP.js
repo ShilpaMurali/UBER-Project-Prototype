@@ -3,7 +3,7 @@ var pool = mysql.createPool({
 	connectionLimit:100,
 	host:'localhost',
 	user: 'root',
-	password: 'admin',
+	password: 'shilpa',
 	database: 'UBER',
 	debug: false
 });
@@ -24,7 +24,7 @@ exports.getProfileDetails = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from customer where Customer_ID = ?",[req.session.customerid],function(err,rows) {
+        connection.query("select * from customer where Customer_ID = ?",[req.session.username],function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -62,7 +62,7 @@ exports.updateCustomerProfile = function (req,res) {
         		"C_Email=?,C_Credit_Card_No=?,C_Credit_Card_CVV=?,C_Credit_Card_EXP=?,C_Credit_Card_ZIP=?,C_Password=?" +
         		"where Customer_ID = ?",
         		[req.param("FirstName"),req.param("LastName"),req.param("Address"),req.param("City"),req.param("State"),req.param("ZipCode"),
-        		 req.param("Contact"),req.param("Email"),req.param("CardNumber"),req.param("CardCVV"),req.param("CardEXP"),req.param("CardZIP"),req.param("CardPWD"),req.session.customerid],
+        		 req.param("Contact"),req.param("Email"),req.param("CardNumber"),req.param("CardCVV"),req.param("CardEXP"),req.param("CardZIP"),req.param("CardPWD"),req.session.username],
         		function(err,rows) {
         			
         	if(err) {                              
