@@ -181,6 +181,8 @@ app.get('/logout',customerSignIn.logout);
 //DeleteAccount
 app.get('/deleteAccount',customerSignIn.deleteAccount);
 
+app.post('/driverReview', driver.driverReview);
+
 //connect
 //connect to the mongo collection session and then createServer
 mongo.connect(mongoSessionConnectURL, function(){

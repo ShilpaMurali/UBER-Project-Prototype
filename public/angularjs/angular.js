@@ -1,3 +1,5 @@
+var ride;
+
 var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
                 mapsApp.controller('mapsController', function($timeout,$compile,$rootScope,$scope,$http,$route, $location, $routeParams) {
                 //google.maps.event.addDomListener(window, 'load', initialize);
@@ -661,6 +663,7 @@ var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
         //This function will fetch ride details
         $scope.ridedetail = function(Ride_ID){
             console.log("in controller " + Ride_ID);
+            ride = Ride_ID;
             $http.post('/rideDetails',{Ride_ID:Ride_ID}).success(function(response){
                 console.log(response);
                 $scope.rideDetails = response;
@@ -713,4 +716,45 @@ var mapsApp = angular.module('myMap', ['ngRoute','xeditable']);
             });
         
         }
+        
+      //This function will display the form to add new poll question
+
+    	$scope.rate = false;
+
+    	$scope.ridereview = function(){
+
+        	console.log("Allowing to rate now");
+
+    		$http.get('/customer/RidesHistoryLoad').success(function(response){
+
+    			$scope.rate=true;
+
+        		
+
+        	});
+
+        }
+
+
+
+    	
+
+    	$scope.driverRateReview = function(){
+
+    		console.log($scope.D_Rating);
+
+    		console.log($scope.D_Review);
+
+    		$http.post('/driverReview',{D_Rating:$scope.D_Rating, D_Review:$scope.D_Review ,Ride_ID:ride}).success(function(response){
+
+	    		console.log(response);
+
+	    		
+
+	    	});
+
+    	} 
+
     })
+    
+    

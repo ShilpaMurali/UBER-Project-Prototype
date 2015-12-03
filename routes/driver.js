@@ -57,7 +57,7 @@ exports.driverSignUpForm = function(req, res){
 	//Driver Billing and Ride History
 	
 	exports.driverRideHistory = function(req, res){
-	var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '15'; ";
+	var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '"+req.session.username+"'; ";
 		
 		console.log("Query is:"+driverBillHistory);
 
@@ -136,3 +136,31 @@ exports.driverSignUpForm = function(req, res){
 				}
 			},existingRideDelete);
 		}	
+		
+		// Review Driver
+		exports.driverReview = function(req, res){
+			
+			var Ride_ID = req.body.Ride_ID;
+			var D_Rating = req.body.D_Rating;
+			var D_Review = req.body.D_Review;
+			console.log( "and the Ride id is: "+Ride_ID);       
+			
+			var existingRideRate = " UPDATE `UBER`.`Ride_History` SET `D_Rating`='"+D_Rating+"', `D_Review`='"+D_Review+"' WHERE `Ride_ID`='"+Ride_ID+"'; "; 
+				
+				" DELETE FROM `UBER`.`Ride_History` WHERE `Ride_ID`='"+Ride_ID+"'; ";
+				
+			
+			
+			mysql.fetchData(function(err,result){
+				if(err){
+					console.log("error occured");
+				}
+				else{
+					console.log("sending result back to ride controller");
+					console.log(result);
+					
+					
+				}
+			},existingRideRate);
+		}			
+		

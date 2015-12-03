@@ -38,7 +38,7 @@ exports.customerHistory = function(req,res){
 exports.customerRideHistory = function(req, res){
 	
 	var Customer_ID = req.session.username;
-	Customer_ID = "3";
+	//Customer_ID = "3";
 	console.log(Customer_ID);
 	var customerBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Customer_ID = '"+Customer_ID+"'; ";
 		
