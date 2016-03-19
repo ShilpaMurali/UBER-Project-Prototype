@@ -24,8 +24,8 @@ function sqlDriver(session,callback)
 {	
 	var DriverID=[], Firstname=[], Lastname=[], D_Address, D_City, D_State, D_ZipCode, DriverPhone=[], 
 	D_Email, D_LicenseID, CarDetails=[], D_Password, DriverRating=[], D_Status; 
-	var sql_query="SELECT * FROM driver WHERE D_Status=1 ORDER BY RAND() LIMIT 5 ";
-	
+	var sql_query="SELECT * FROM UBER.Driver WHERE D_Status=1 ORDER BY RAND() LIMIT 5 ";
+	console.log(sql_query);
 	connection.query(sql_query,function(err,rows)
 	{
 		if(err){

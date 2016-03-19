@@ -2,9 +2,9 @@ var mysql = require('mysql');
 var ejs= require('ejs');
 var pool = mysql.createPool({
 	connectionLimit:100,
-	host:'localhost',
-	user: 'root',
-	password: 'admin',
+	host:'uber.c9fsewowtunx.us-west-2.rds.amazonaws.com',
+	user: 'msensor_team20',
+	password: 'msensor_team20',
 	database: 'UBER',
 	debug: false
 });
@@ -20,7 +20,7 @@ exports.admCustomerList = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Customer_ID,C_Firstname,C_Email from customer",function(err,rows) {
+        connection.query("select Customer_ID,C_Firstname,C_Email from UBER.Customer",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -56,7 +56,7 @@ exports.admDriverList = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Driver_ID,D_Firstname,D_Email from driver",function(err,rows) {
+        connection.query("select Driver_ID,D_Firstname,D_Email from UBER.Driver",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -209,7 +209,7 @@ exports.dayRevenueFunc = function (req,res) {
 	          return;
 	        }  
 	        connection.query("select Ride_ID,Source_Add, Destination_Add,R_Amount " +
-	        		" from ride_history " +
+	        		" from UBER.Ride_History " +
 	        		" where R_Drop like '"+ enteredDay + "%' " +
 	        		" and R_Status=1 ",function(err,rows) {
 	        	if(err) {
@@ -264,7 +264,7 @@ exports.locRevenueFunc = function (req,res) {
           return;
         }  
         connection.query("select Ride_ID,Source_Add, Destination_Add,R_Amount " +
-        		" from ride_history " +
+        		" from UBER.Ride_History " +
         		" where Destination_Add like '"+ enteredLoc + "%' " +
         		" and R_Status=1 ",function(err,rows) {
         	if(err) {
@@ -316,7 +316,7 @@ exports.searchDriverFunc = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from driver where Driver_ID = '"+ enteredId + "'",function(err,rows) {
+        connection.query("select * from UBER.Driver where Driver_ID = '"+ enteredId + "'",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -366,7 +366,7 @@ exports.searchCustomerFunc = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from customer where Customer_ID = '"+ enteredId + "'",function(err,rows) {
+        connection.query("select * from UBER.Customer where Customer_ID = '"+ enteredId + "'",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -420,7 +420,7 @@ exports.searchBillFunc = function (req,res) {
           return;
         } 
 
-        connection.query("select * from ride_history where Ride_ID = '"+ enteredId + "'and R_Status=1",function(err,rows) {
+        connection.query("select * from UBER.Ride_History where Ride_ID = '"+ enteredId + "'and R_Status=1",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -437,10 +437,10 @@ var driverId = rows[0].Driver_ID;
 var customerFirst;
 var driverFirst;
 var res;
-        		connection.query("select C_Firstname,C_Lastname from customer where Customer_ID = ?",[customerId],function(err,custname) {
+        		connection.query("select C_Firstname,C_Lastname from UBER.Customer where Customer_ID = ?",[customerId],function(err,custname) {
         			customerFirst = custname[0].C_Firstname + " " + custname[0].C_Lastname;
         			console.log("customername:"+ customerFirst);
-        			connection.query("select D_Firstname,D_Lastname from driver where Driver_ID = ?",[driverId],function(err,drivname) {
+        			connection.query("select D_Firstname,D_Lastname from UBER.Driver where Driver_ID = ?",[driverId],function(err,drivname) {
         			driverFirst = drivname[0].D_Firstname + " " + drivname[0].D_Lastname;
         			console.log("customername:"+ driverFirst);
         			var str = (rows[0].Ride_ID).toString();

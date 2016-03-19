@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var pool = mysql.createPool({
 	connectionLimit:100,
-	host:'localhost',
-	user: 'root',
-	password: 'shilpa',
+	host:'uber.c9fsewowtunx.us-west-2.rds.amazonaws.com',
+	user: 'msensor_team20',
+	password: 'msensor_team20',
 	database: 'UBER',
 	debug: false
 });
@@ -24,7 +24,7 @@ exports.getProfileDetails = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from customer where Customer_ID = ?",[req.session.username],function(err,rows) {
+        connection.query("select * from Customer where Customer_ID = ?",[req.session.username],function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -45,6 +45,7 @@ exports.getProfileDetails = function (req,res) {
         			"rating": rows[0].C_Avg_Rating,
         	};
 			res.send(json_responses);
+			console.log(json_responses);
         });
 	});
 };
@@ -58,7 +59,7 @@ exports.updateCustomerProfile = function (req,res) {
           return;
         } 
         // TO-DO : Add password also as a editable field, C_Credit_Card_EXP=?,C_Credit_Card_ZIP=?
-        connection.query("update customer set C_Firstname=?,C_Lastname=?,C_Address=?,C_City=?,C_State=?,C_ZipCode=?,C_Phone=?," +
+        connection.query("update Customer set C_Firstname=?,C_Lastname=?,C_Address=?,C_City=?,C_State=?,C_ZipCode=?,C_Phone=?," +
         		"C_Email=?,C_Credit_Card_No=?,C_Credit_Card_CVV=?,C_Credit_Card_EXP=?,C_Credit_Card_ZIP=?,C_Password=?" +
         		"where Customer_ID = ?",
         		[req.param("FirstName"),req.param("LastName"),req.param("Address"),req.param("City"),req.param("State"),req.param("ZipCode"),

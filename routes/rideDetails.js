@@ -10,8 +10,8 @@ exports.insertRide=function(req,res){
 	var Source_Add,Destination_Add,Customer_ID,Driver_ID,R_Distance,R_Status;
 	var post={Source_Add:req.param("Source_Add"),Destination_Add:req.param("Destination_Add"),
 			"Customer_ID":req.session.username,"Driver_ID":req.param("Driver_ID"),"R_Distance":req.param("R_Distance"),"R_Status":req.param("R_Status")};
-	var sql_query='Insert into ride_history set?';
-	var sql_query2="select * from ride_history where Customer_ID = "+connection.escape(req.session.username)+' and Driver_ID = '+
+	var sql_query='Insert into Ride_History set?';
+	var sql_query2="select * from Ride_History where Customer_ID = "+connection.escape(req.session.username)+' and Driver_ID = '+
 	connection.escape(req.param("Driver_ID"))+' and R_Status = '+connection.escape(req.param("R_Status"));
 	var json_response;
 	connection.query(sql_query,post,function(err,rows)
@@ -44,8 +44,8 @@ exports.cancelRide=function(req,res){
 	Driver_ID=req.param("Driver_ID");
 	Customer_ID=req.session.username;
 	Ride_ID=req.param("Ride_ID");
-	//var sql_query='update ride_history set R_Status = '+connection.escape(R_Status)+' where Customer_ID = '+connection.escape(Customer_ID)+' and Driver_ID = '+connection.escape(Driver_ID);
-	var sql_query='update ride_history set R_Status = '+connection.escape(R_Status)+' where Ride_ID = '+connection.escape(Ride_ID);
+	//var sql_query='update UBER.Ride_History set R_Status = '+connection.escape(R_Status)+' where Customer_ID = '+connection.escape(Customer_ID)+' and Driver_ID = '+connection.escape(Driver_ID);
+	var sql_query='update UBER.Ride_History set R_Status = '+connection.escape(R_Status)+' where Ride_ID = '+connection.escape(Ride_ID);
 	var json_response;
 	connection.query(sql_query,function(err,rows)
 	{
@@ -70,8 +70,8 @@ exports.updateRide=function(req,res){
 	Customer_ID=req.session.username;
 	R_Amount=req.param("R_Amount");
 	Ride_ID=req.param("Ride_ID");
-	//var sql_query='update ride_history set R_Status = '+connection.escape(R_Status)+', R_Amount = '+connection.escape(R_Amount)+' where Customer_ID = '+connection.escape(Customer_ID)+' and Driver_ID = '+connection.escape(Driver_ID);
-	var sql_query='update ride_history set R_Status = '+connection.escape(R_Status)+', R_Amount = '+connection.escape(R_Amount)+' where Ride_ID = '+connection.escape(Ride_ID);
+	//var sql_query='update UBER.Ride_History set R_Status = '+connection.escape(R_Status)+', R_Amount = '+connection.escape(R_Amount)+' where Customer_ID = '+connection.escape(Customer_ID)+' and Driver_ID = '+connection.escape(Driver_ID);
+	var sql_query='update UBER.Ride_History set R_Status = '+connection.escape(R_Status)+', R_Amount = '+connection.escape(R_Amount)+' where Ride_ID = '+connection.escape(Ride_ID);
 	var json_response;
 	connection.query(sql_query,function(err,rows)
 	{

@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var pool = mysql.createPool({
 	connectionLimit:100,
-	host:'localhost',
-	user: 'root',
-	password: 'shilpa',
+	host:'uber.c9fsewowtunx.us-west-2.rds.amazonaws.com',
+	user: 'msensor_team20',
+	password: 'msensor_team20',
 	database: 'UBER',
 	debug: false
 });
@@ -23,7 +23,7 @@ exports.getProfileDetails = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select * from driver where Driver_ID = ?",[req.session.username],function(err,rows) {
+        connection.query("select * from Driver where Driver_ID = ?",[req.session.username],function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -80,31 +80,31 @@ exports.updateDriverProfile = function (req,res) {
           return;
         } 
         // TO-DO : Add password also as a editable field, D_Credit_Card_EXP=?,D_Credit_Card_ZIP=?
-        connection.query("select Source_Add,R_Pickup from ride_history where Driver_ID = ? and R_Status=0 ",[req.session.driverid],function(err,inforows) {
+        connection.query("select Source_Add,R_Pickup from UBER.Ride_History where Driver_ID = ? and R_Status=0 ",[req.session.driverid],function(err,inforows) {
         	if(err) {                              
         				throw err;
         			}
         	if(inforows.length !== 0) { // there is ONE upcoming requested ride
-        		connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=0)",[req.session.driverid],function(err,rows) {
+        		connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=0)",[req.session.driverid],function(err,rows) {
             		var json_responses = {"statusCode" : 200,"Name": rows[0].C_Firstname,"Phone": rows[0].C_Phone,"Address": inforows[0].Source_Add, "Date": inforows[0].R_Pickup, "Tab":"requested"};
             		console.log(json_responses);
         			res.send(json_responses);
             	});
         	}
         	else { // checking for cancelled ride
-        		connection.query("select Source_Add,R_Pickup from ride_history where Driver_ID = ? and R_Status=2 ",[req.session.driverid],function(err,cancelrows) {
+        		connection.query("select Source_Add,R_Pickup from UBER.Ride_History where Driver_ID = ? and R_Status=2 ",[req.session.driverid],function(err,cancelrows) {
         			if(cancelrows.length !== 0) {
-        				connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=2)",[req.session.driverid],function(err,canrows) {
+        				connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=2)",[req.session.driverid],function(err,canrows) {
         					var json_responses = {"statusCode" : 200,"Name": canrows[0].C_Firstname,"Phone": canrows[0].C_Phone,"Address": cancelrows[0].Source_Add, "Date": cancelrows[0].R_Pickup, "Tab":"cancelled"};
-        					connection.query("update ride_history set R_Status=3 where Driver_ID=? and R_Status=2",[req.session.driverid],function(err,rows) {
+        					connection.query("update UBER.Ride_History set R_Status=3 where Driver_ID=? and R_Status=2",[req.session.driverid],function(err,rows) {
         					});
         					res.send(json_responses);
         				});
         			}
         			else { // checking for completed ride
-        				connection.query("select Source_Add,R_Pickup from ride_history where Driver_ID = ? and R_Status=1 order by R_Pickup DESC ",[req.session.driverid],function(err,comprows) {
+        				connection.query("select Source_Add,R_Pickup from UBER.Ride_History where Driver_ID = ? and R_Status=1 order by R_Pickup DESC ",[req.session.driverid],function(err,comprows) {
         					if(comprows.length!==0) {
-        						connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=1 order by R_Pickup DESC)",[req.session.driverid],function(err,comrows) {
+        						connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=1 order by R_Pickup DESC)",[req.session.driverid],function(err,comrows) {
         							var json_responses = {"statusCode" : 200,"Name": comrows[0].C_Firstname,"Phone": comrows[0].C_Phone,"Address": comprows[0].Source_Add, "Date": comprows[0].R_Pickup, "Tab":"completed"};
         							res.send(json_responses);
         						});
@@ -134,28 +134,32 @@ exports.getDriverHomePageDetails = function (req,res) {
           return;
         } 
         // TO-DO : Add password also as a editable field, D_Credit_Card_EXP=?,D_Credit_Card_ZIP=?
-        connection.query("select Source_Add,R_Pickup from ride_history where Driver_ID = ? and R_Status=0 ",[req.session.driverid],function(err,inforows) {
+        connection.query("select Source_Add,R_Pickup from UBER.Ride_History where Driver_ID = ? and R_Status=0 ",[req.session.driverid],function(err,inforows) {
+        	
         	if(err) {                              
         				throw err;
         			}
+        	
         	if(inforows.length !== 0) { // there is ONE upcoming requested ride
-        		connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=0)",[req.session.driverid],function(err,rows) {
+        		
+        		connection.query("select C_Firstname,C_Phone from UBER.Customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=0)",[req.session.driverid],function(err,rows) {
             		var json_responses = {"statusCode" : 200,"Name": rows[0].C_Firstname,"Phone": rows[0].C_Phone,"Address": inforows[0].Source_Add, "Date": inforows[0].R_Pickup, "Tab":"requested"};
             		console.log(json_responses);
         			res.send(json_responses);
             	});
         	}
         	else { // checking for cancelled ride
-        		connection.query("select Source_Add,R_Pickup,R_Status from ride_history where Driver_ID = ? order by R_Pickup DESC",[req.session.driverid],function(err,cancelcomprows) {
+        		connection.query("select Source_Add,R_Pickup,R_Status from UBER.Ride_History where Driver_ID = ? order by R_Pickup DESC",[req.session.driverid],function(err,cancelcomprows) {
         			if(cancelcomprows.length !== 0) {
         				if(cancelcomprows[0].R_Status === 2) { // cancelled ride to be displayed first
-        					connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=2 order by R_Pickup DESC limit 1)",[req.session.driverid],function(err,canrows) {
+        					
+        					connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=2 order by R_Pickup DESC limit 1)",[req.session.driverid],function(err,canrows) {
     							var json_responses = {"statusCode" : 200,"Name": canrows[0].C_Firstname,"Phone": canrows[0].C_Phone,"Address": cancelcomprows[0].Source_Add, "Date": cancelcomprows[0].R_Pickup, "Tab":"cancelled"};
     							res.send(json_responses);
     						});
         				}
         				else { // completed ride to be displayed first
-        					connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from ride_history where Driver_ID=? and R_Status=1 order by R_Pickup DESC limit 1)",[req.session.driverid],function(err,comrows) {
+        					connection.query("select C_Firstname,C_Phone from customer where Customer_ID = (select Customer_ID from UBER.Ride_History where Driver_ID=? and R_Status=1 order by R_Pickup DESC limit 1)",[req.session.driverid],function(err,comrows) {
     							var json_responses = {"statusCode" : 200,"Name": comrows[0].C_Firstname,"Phone": comrows[0].C_Phone,"Address": cancelcomprows[0].Source_Add, "Date": cancelcomprows[0].R_Pickup, "Tab":"completed"};
     							res.send(json_responses);
     						});
@@ -165,6 +169,7 @@ exports.getDriverHomePageDetails = function (req,res) {
         				// nothing assigned for the driver
 						var json_responses = {"statusCode" : 200,"Tab":"nothing"};
 						res.send(json_responses);
+						
         			}
         		});
         	}

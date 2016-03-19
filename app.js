@@ -71,9 +71,11 @@ app.get('/users', user.list);
 app.get('/homepage/signIn', signUpIn.signIn);
 app.get('/homepage/signUp', signUpIn.signUp);
 app.get('/homepage/signin/customer', signUpIn.customerSignIn);
-// Customer Ride History
+// Customer Ride History Previous
 app.get('/customer/RidesHistory',customer.customerRideHistory);
 app.get('/customer/RidesHistoryLoad',customer.customerHistory);
+
+
 
 
 

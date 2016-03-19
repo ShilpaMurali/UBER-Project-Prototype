@@ -7,9 +7,9 @@ var arrayOfPools= [];
 
 function getConnection(){
 	var connection = mysql.createConnection({
-		host : 'localhost', 
-		user : 'root',
-		password : 'shilpa',
+		host : 'uber.c9fsewowtunx.us-west-2.rds.amazonaws.com', 
+		user : 'msensor_team20',
+		password : 'msensor_team20',
 		database : 'UBER',
 	    port	 : 3306
 	});

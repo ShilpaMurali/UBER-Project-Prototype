@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var pool = mysql.createPool({
 	connectionLimit:100,
-	host:'localhost',
-	user: 'root',
-	password: 'shilpa',
+	host:'uber.c9fsewowtunx.us-west-2.rds.amazonaws.com',
+	user: 'msensor_team20',
+	password: 'msensor_team20',
 	database: 'UBER',
 	debug: false
 });
@@ -21,7 +21,7 @@ exports.getRidesPerAreaStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from ride_history GROUP BY Destination_Add",function(err,rows) {
+        connection.query("select Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from Ride_History GROUP BY Destination_Add",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -54,7 +54,7 @@ exports.getRevenuePerDayStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Ride_ID, R_Amount from ride_history where R_Drop like '%"+date+"%' and R_Status=1",function(err,rows) {
+        connection.query("select Ride_ID, R_Amount from UBER.Ride_History where R_Drop like '%"+date+"%' and R_Status=1",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -91,7 +91,7 @@ exports.getRevenuePerAreaStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Destination_Add, SUM(R_Amount) as 'Revenue' from ride_history where R_Status=1 group by Destination_Add",function(err,rows) {
+        connection.query("select Destination_Add, SUM(R_Amount) as 'Revenue' from UBER.Ride_History where R_Status=1 group by Destination_Add",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -130,7 +130,7 @@ exports.getRidesPerDriverStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Destination_Add from ride_history GROUP BY Destination_Add",function(err,rows) {
+        connection.query("select Destination_Add from UBER.Ride_History GROUP BY Destination_Add",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -138,7 +138,7 @@ exports.getRidesPerDriverStatistics = function (req,res) {
         	for (i=0;i<rows.length;i++) {
         		labels.push(rows[i].Destination_Add);
         	}
-        	connection.query("select Driver_ID,Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from ride_history GROUP BY Driver_ID,Destination_Add",function(err,drivers) {
+        	connection.query("select Driver_ID,Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from UBER.Ride_History GROUP BY Driver_ID,Destination_Add",function(err,drivers) {
         		if(drivers.length !== 0) {
         			subArr = [{"Dest":drivers[0].Destination_Add,"Rides":drivers[0].RidesInLocation}];
         			for(i=1;i<drivers.length;i++) {
@@ -199,7 +199,7 @@ exports.getRidesPerCustomerStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Destination_Add from ride_history GROUP BY Destination_Add",function(err,rows) {
+        connection.query("select Destination_Add from UBER.Ride_History GROUP BY Destination_Add",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -207,7 +207,7 @@ exports.getRidesPerCustomerStatistics = function (req,res) {
         	for (i=0;i<rows.length;i++) {
         		labels.push(rows[i].Destination_Add);
         	}
-        	connection.query("select Customer_ID,Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from ride_history GROUP BY Customer_ID,Destination_Add",function(err,customers) {
+        	connection.query("select Customer_ID,Destination_Add ,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from UBER.Ride_History GROUP BY Customer_ID,Destination_Add",function(err,customers) {
         		if(customers.length !== 0) {
         			subArr = [{"Dest":customers[0].Destination_Add,"Rides":customers[0].RidesInLocation}];
         			for(i=1;i<customers.length;i++) {
@@ -267,7 +267,7 @@ exports.getRidesPerCustomerStatistics = function (req,res) {
           res.json({"statusCode" : 100, "status" : "Error in connection database"});
           return;
         }  
-        connection.query("select Destination_Add from ride_history GROUP BY Destination_Add",function(err,rows) {
+        connection.query("select Destination_Add from UBER.Ride_History GROUP BY Destination_Add",function(err,rows) {
         	if(err) {
         		throw err;
         	}
@@ -286,7 +286,7 @@ exports.getRidesPerCustomerStatistics = function (req,res) {
                 			}
             				data_arr[drivers[i].Driver_ID] = data;
             				ctr = i;
-            				connection.query("select Driver_ID,Destination_Add,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from ride_history where Driver_ID=? GROUP BY Destination_Add",[drivers[i].Driver_ID],function(err,locstats) {	
+            				connection.query("select Driver_ID,Destination_Add,sum(IF(R_Status=1,1,0)) AS 'RidesInLocation' from UBER.Ride_History where Driver_ID=? GROUP BY Destination_Add",[drivers[i].Driver_ID],function(err,locstats) {	
             				for (var k=0;k<locstats.length;k++) {
             					for (var j=0; j<labels.length;j++) {
             						if(locstats[k].Destination_Add === labels[j]) {

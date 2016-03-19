@@ -4,10 +4,10 @@ var mysql=require('mysql');
 exports.getConnection=function(req,res){
 var pool  = mysql.createPool({
 	  connectionLimit : 100,
-	  host: "localhost",
-		user: "root",
-		password: "shilpa",
-		database:"uber"
+	  host: "uber.c9fsewowtunx.us-west-2.rds.amazonaws.com",
+		user: "msensor_team20",
+		password: "msensor_team20",
+		database:"UBER"
 	});
 return pool;
 };

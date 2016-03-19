@@ -8,7 +8,13 @@ angular
    
     	
     	// This function will load all the poll questions
-    	
+    
+	  $http.get('/customer/RidesHistory').success(function(response){
+  		$scope.rides=response;
+  		console.log(response);
+  	});
+	  
+	  
     	$http.get('/driver/RidesHistory').success(function(response){
     		$scope.rides=response;
     		console.log(response);

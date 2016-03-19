@@ -25,7 +25,7 @@ exports.driverSignUp=function(req, res) {
 
 
 exports.driverSignUpForm = function(req, res){
-	var newDriver= " INSERT INTO uber.Driver (`D_Firstname`, `D_Lastname`, `D_Address`, `D_City`, `D_State`, `D_ZipCode`, `D_Phone`, `D_Email`, `D_Password`) VALUES ('"+req.param("D_Firstname")+"', '" + req.param("D_Lastname") +"' , '" + req.param("D_Address") +"' , '" + req.param("D_City") +"', '" + req.param("D_State") +"' , '" + req.param("D_ZipCode") +"'  , '" + req.param("D_Phone") +"' , '" + req.param("D_Email") +"' , '" + bcrypt.hashSync(req.param("D_Password"),null,null) +"');";
+	var newDriver= " INSERT INTO UBER.Driver (`D_Firstname`, `D_Lastname`, `D_Address`, `D_City`, `D_State`, `D_ZipCode`, `D_Phone`, `D_Email`, `D_Password`) VALUES ('"+req.param("D_Firstname")+"', '" + req.param("D_Lastname") +"' , '" + req.param("D_Address") +"' , '" + req.param("D_City") +"', '" + req.param("D_State") +"' , '" + req.param("D_ZipCode") +"'  , '" + req.param("D_Phone") +"' , '" + req.param("D_Email") +"' , '" + bcrypt.hashSync(req.param("D_Password"),null,null) +"');";
 		
 	
 	
@@ -57,12 +57,15 @@ exports.driverSignUpForm = function(req, res){
 	//Driver Billing and Ride History
 	
 	exports.driverRideHistory = function(req, res){
-	var driverBillHistory =  " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '"+req.session.username+"'; ";
+	var driverBillHistory = " select * from UBER.Ride_History natural join UBER.Driver natural join UBER.Customer where Driver_ID = '"+req.session.username+"'; "; 
 		
-		console.log("Query is:"+driverBillHistory);
+
+		
+		console.log("Driver History Query is:"+driverBillHistory);
 
 		mysql.fetchData(function(err,results){
 			if(err){
+				console.log("Error in" + driverBillHistory);
 				throw err;
 			} else {
 			
